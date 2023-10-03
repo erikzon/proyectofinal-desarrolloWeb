@@ -1,7 +1,7 @@
 const sql = require("mssql/msnodesqlv8");
 var config = {
   database: "proyecto",
-  server: "127.0.0.1",
+  server: "localhost",
   user: "sa",
   password: "qweEWQ45%$",
   port: "1433",
