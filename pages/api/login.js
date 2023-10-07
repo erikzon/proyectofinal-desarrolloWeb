@@ -1,22 +1,8 @@
-//DROPLET
-const sql = require("mssql/msnodesqlv8");
-var config = {
-  database: "proyecto",
-  server: "167.71.172.206",
-  user: "sa",
-  password: "qweEWQ45%$",
-  port: "1433",
-  driver: "msnodesqlv8",
-  options: {
-    trustedConnection: false,
-  },
-};
-
-// LOCAL
+// DROPLET
 // const sql = require("mssql/msnodesqlv8");
 // var config = {
 //   database: "proyecto",
-//   server: "localhost",
+//   server: "167.71.172.206",
 //   user: "sa",
 //   password: "qweEWQ45%$",
 //   port: "1433",
@@ -25,6 +11,20 @@ var config = {
 //     trustedConnection: false,
 //   },
 // };
+
+// LOCAL
+const sql = require("mssql/msnodesqlv8");
+var config = {
+  database: "proyecto",
+  server: "localhost",
+  user: "sa",
+  password: "qweEWQ45%$",
+  port: "1433",
+  driver: "msnodesqlv8",
+  options: {
+    trustedConnection: false,
+  },
+};
 
 
 sql.connect(config, function (err) {

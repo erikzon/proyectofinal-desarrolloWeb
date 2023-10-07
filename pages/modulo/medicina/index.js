@@ -57,18 +57,36 @@ export default function Medicina({ recordset }) {
   };
 
   const crearMedicina = () => {
-    const peticion = fetch(
-      `http://localhost:3000/api/medicina?usuario=${nombreRef.current.value}&fechaingreso=${fechaIngresoRef.current.value}&fechalote=${fechaLoteRef.current.value}&fechacaducidad=${fechaCaducidadRef.current.value}&casa=${casaRef.current.value}&tipomedicamento=${tipoMedicamentoRef.current.value}`,
-      { method: "POST" }
-    );
-    peticion
-      .then((response) => response.json())
-      .then((datos) => {
-        refreshData();
-        setModalCrear(false);
-      })
-      .catch((e) => console.log(e));
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result.replace("data:", "").replace(/^.+,/, "");
+      const data = {
+        usuario: nombreRef.current.value,
+        fechaingreso: fechaIngresoRef.current.value,
+        fechalote: fechaLoteRef.current.value,
+        fechacaducidad: fechaCaducidadRef.current.value,
+        casa: casaRef.current.value,
+        tipomedicamento: tipoMedicamentoRef.current.value,
+        descripcion: descripcionRef.current.value,
+        imagen: base64String,
+      };
+      const peticion = fetch("http://localhost:3000/api/medicina", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      peticion
+        .then((response) => response.json())
+        .then((datos) => {
+          refreshData();
+          setModalCrear(false);
+        })
+        .catch((e) => console.log(e));
+    };
+    reader.readAsDataURL(ImagenRef.current.files[0]);
   };
+  
+
   const editarMedicina = () => {
     const peticion = fetch(
       `http://localhost:3000/api/medicina?usuario=${nombreRef.current.value}&fechaingreso=${fechaIngresoRef.current.value}&fechalote=${fechaLoteRef.current.value}&fechacaducidad=${fechaCaducidadRef.current.value}&casa=${casaRef.current.value}&tipomedicamento=${tipoMedicamentoRef.current.value}`,
@@ -89,6 +107,8 @@ export default function Medicina({ recordset }) {
   const fechaCaducidadRef = useRef(" ");
   const casaRef = useRef(" ");
   const tipoMedicamentoRef = useRef(" ");
+  const descripcionRef = useRef(" ");
+  const ImagenRef = useRef(" ");
 
   const editar = (record) => {
     setModalCrear(true);
@@ -220,6 +240,7 @@ export default function Medicina({ recordset }) {
                     Tipo Medicamento
                     <TextField fullWidth type="text" ref={tipoMedicamentoRef} />
                   </div>
+                  
                 </section>
                 {modoUpdate ? (
                   <Button type="button" onClick={() => editarMedicina()}>
@@ -230,6 +251,36 @@ export default function Medicina({ recordset }) {
                     Crear
                   </Button>
                 )}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  alignItems: "center",
+                }}
+              >
+                Descripción
+                <TextField fullWidth type="text" ref={descripcionRef} />
+              </div>
+              {/* <div
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  alignItems: "center",
+                }}
+              >
+                URL de la imagen
+                <TextField fullWidth type="text" ref={ImagenRef} />
+              </div> */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  alignItems: "center",
+                }}
+              >
+                Imagen
+                <input type="file" ref={ImagenRef} />
               </div>
             </form>
           )}
@@ -253,6 +304,7 @@ export default function Medicina({ recordset }) {
                   <TableDataCell>{record.Fecha_Caducidad}</TableDataCell>
                   <TableDataCell>{record.Casa}</TableDataCell>
                   <TableDataCell>{record.TipoMedicamento}</TableDataCell>
+                  <TableDataCell><img src={`data:image/png;base64,${record.Imagen}`} alt="Imagen" style={{width: '35px', height: '35px'}}/></TableDataCell>
                   <TableDataCell>
                     <Button onClick={() => editar(record)}>Editar</Button>
                     <Button onClick={() => eliminar(record.ID_Medicina)}>

@@ -27,9 +27,22 @@ export default async function handler(req, res) {
         }
       }
     );
-  } else if (req.method === "GET") {
+  } else if (req.method === "GET" && req.params) {
+    console.log('ENTRE ACA');
     await request.query(
-      `select ID_TipoUsuario as value, Nombre as label from Tipo_Usuario`,
+      `select * from Medicina where ID_Medicina = ${req.params.id}`,
+      function (err, recordSet) {
+        if (err) {
+          res.status(400).json({ respuesta: 0 });
+        } else {
+          res.status(200).json(recordSet.recordset);
+        }
+      }
+    );
+  }
+  else if (req.method === "GET") {
+    await request.query(
+      `exec readMedicina`,
       function (err, recordSet) {
         if (err) {
           res.status(400).json({ respuesta: 0 });
@@ -39,9 +52,9 @@ export default async function handler(req, res) {
       }
     );
   } else if (req.method === "POST") {
-    console.log(`exec createMedicina '${req.query.usuario}',1,'${req.query.fechaingreso}','${req.query.fechalote}','${req.query.fechacaducidad}','${req.query.casa}','${req.query.tipomedicamento}'`);
+    const data = req.body;
     await request.query(
-      `exec createMedicina '${req.query.usuario}',1,'${req.query.fechaingreso}','${req.query.fechalote}','${req.query.fechacaducidad}','${req.query.casa}','${req.query.tipomedicamento}'`,
+      `exec createMedicina '${data.usuario}',1,'${data.fechaingreso}','${data.fechalote}','${data.fechacaducidad}','${data.casa}','${data.tipomedicamento}','${data.descripcion}','${data.imagen}'`,
       function (err, recordSet) {
         if (err) {
           res.status(400).json({ respuesta: 0 });
@@ -49,7 +62,7 @@ export default async function handler(req, res) {
           res.status(200).json({ respuesta: "correcto" });
         }
       }
-    );
+    );  
   } else if (req.method === "PUT") {
     console.log(
       `update medicina set nombre = '${req.query.usuario}', Perecedero = 1, Fecha_Ingreso = '${req.query.fechaingreso}', Fecha_Lote = '${req.query.fechalote}', Fecha_Caducidad = '${req.query.fechacaducidad}', Casa = '${req.query.casa}', TipoMedicamento = '${req.query.tipomedicamento}' where casa = '${req.query.casa}'`
