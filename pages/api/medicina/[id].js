@@ -19,9 +19,17 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
       const request = new sql.Request();
-      const result = await request.query(
-        `select * from Medicina where ID_Medicina = ${req.query.id}`
-      );
+      let result = [];
+      if (!isNaN(req.query.id)) { // Verificar si req.query.id es un número
+        result = await request.query(
+          `select * from Medicina where ID_Medicina = ${req.query.id}`
+        );
+      } else {
+        result = await request.query(
+          `select * from Medicina where Nombre like '%${req.query.id}%'`
+        );
+
+      }
 
       res.status(200).json(result.recordset);
     }
