@@ -1,5 +1,5 @@
-const sql = require("mssql/msnodesqlv8");
 require('dotenv').config()
+const sql = require("mssql/msnodesqlv8");
 
   export default async function handler(req, res) {
     var config = {
