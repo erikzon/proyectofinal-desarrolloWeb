@@ -1,5 +1,5 @@
 import sql from "mssql/msnodesqlv8";
-require('dotenv').config()
+
 
 export default async function handler(req, res) {
 
