@@ -12,6 +12,7 @@
     "@react95/clippy": "^1.0.9",
     "@react95/icons": "^2.0.5",
     "clippy": "^0.0.0",
+    "dotenv": "^16.3.1",
     "msnodesqlv8": "^2.6.0",
     "mssql": "^9.0.1",
     "next": "12.3.1",

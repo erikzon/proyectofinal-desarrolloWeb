@@ -1,40 +1,22 @@
-// DROPLET
-// const sql = require("mssql/msnodesqlv8");
-// var config = {
-//   database: "proyecto",
-//   server: "167.71.172.206",
-//   user: "sa",
-//   password: "qweEWQ45%$",
-//   port: "1433",
-//   driver: "msnodesqlv8",
-//   options: {
-//     trustedConnection: false,
-//   },
-// };
-
-// LOCAL
-const sql = require("mssql/msnodesqlv8");
-var config = {
-  database: "proyecto",
-  server: "localhost",
-  user: "sa",
-  password: "qweEWQ45%$",
-  port: "1433",
-  driver: "msnodesqlv8",
-  options: {
-    trustedConnection: false,
-  },
-};
-
-
-sql.connect(config, function (err) {
-  if (err) {
-    console.log(err);
-  }
-});
+require('dotenv').config()
+import sql from "mssql/msnodesqlv8";
 
 export default async function handler(req, res) {
+  var config = {
+    database: process.env.DATABASE,
+    server: process.env.SERVER,
+    user: process.env.USERDB,
+    password: process.env.PASSWORD,
+    port: process.env.PORT,
+    driver: process.env.DRIVER,
+    options: {
+      trustedConnection: process.env.TRUSTED_CONNECTION === 'true',
+    },
+  };
+  
+  await sql.connect(config); // Conectar a la base de datos
   var request = new sql.Request();
+
   if (req.method === "GET") {
     await request.query(
       `select 1 as respuesta from usuario where Usuario = '${req.query.usuario}' and Contrasena = '${req.query.contrasena}' and ActivoInactivo = 1`,
