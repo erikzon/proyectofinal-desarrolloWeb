@@ -1,20 +1,19 @@
+require('dotenv').config()
 const sql = require("mssql/msnodesqlv8");
-var config = {
-  database: "proyecto",
-  server: "ERICK-LAPTO\\SQLEXPRESS",
-  driver: "msnodesqlv8",
-  options: {
-    trustedConnection: true,
-  },
-};
-
-sql.connect(config, function (err) {
-  if (err) {
-    console.log(err);
-  }
-});
 
 export default async function handler(req, res) {
+  var config = {
+    database: process.env.DATABASE,
+    server: process.env.SERVER,
+    user: process.env.USERDB,
+    password: process.env.PASSWORD,
+    port: process.env.PORT,
+    driver: process.env.DRIVER,
+    options: {
+      trustedConnection: process.env.TRUSTED_CONNECTION === 'true',
+    },
+  };
+  await sql.connect(config); // Conectar a la base de datos
   var request = new sql.Request();
   if (req.method === "DELETE") {
     await request.query(

@@ -1,32 +1,42 @@
-const sql = require("mssql/msnodesqlv8");
-var config = {
-  database: "proyecto",
-  server: "ERICK-LAPTO\\SQLEXPRESS",
-  driver: "msnodesqlv8",
-  options: {
-    trustedConnection: true,
-  },
-};
-
-sql.connect(config, function (err) {
-  if (err) {
-    console.log(err);
-  }
-});
+require('dotenv').config()
+import sql from "mssql/msnodesqlv8";
 
 export default async function handler(req, res) {
-  var request = new sql.Request();
-  
+  var config = {
+    database: process.env.DATABASE,
+    server: process.env.SERVER,
+    user: process.env.USERDB,
+    password: process.env.PASSWORD,
+    port: process.env.PORT,
+    driver: process.env.DRIVER,
+    options: {
+      trustedConnection: process.env.TRUSTED_CONNECTION === 'true',
+    },
+  };
+
+  try {
+    await sql.connect(config); // Conectar a la base de datos
+
     if (req.method === "GET") {
-        await request.query(
-            `select * from Medicina where ID_Medicina = ${req.query.id}`,
-            function (err, recordSet) {
-              if (err) {
-                res.status(400).json({ respuesta: 0 });
-              } else {
-                res.status(200).json(recordSet.recordset);
-              }
-            }
-          );
-        }
+      const request = new sql.Request();
+      let result = [];
+      if (!isNaN(req.query.id)) { // Verificar si req.query.id es un número
+        result = await request.query(
+          `select * from Medicina where ID_Medicina = ${req.query.id}`
+        );
+      } else {
+        result = await request.query(
+          `select * from Medicina where Nombre like '%${req.query.id}%'`
+        );
+
+      }
+
+      res.status(200).json(result.recordset);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ respuesta: "Error en el servidor" });
+  } finally {
+    sql.close(); // Cerrar la conexión después de completar la consulta
+  }
 }

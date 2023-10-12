@@ -2,8 +2,11 @@ API
 obtener lista de medicinas:
 http://localhost:3000/api/medicina
 
-obtener una medicina en especifico:
+obtener una medicina por id (damos un numero):
 http://localhost:3000/api/medicina/5
+
+obtener una medicina por nombre (damos texto):
+http://localhost:3000/api/medicina/GastroInter3000
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
