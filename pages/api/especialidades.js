@@ -22,9 +22,21 @@ export default async function handler(req, res) {
       `select ID_Especialida as value, Nombre as label from Especialidad`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({ respuesta: 0 }));
         } else {
-          res.status(200).json(recordSet.recordset);
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify(recordSet.recordset));
         }
       }
     );

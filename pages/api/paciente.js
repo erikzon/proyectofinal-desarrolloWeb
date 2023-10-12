@@ -22,9 +22,21 @@ const sql = require("mssql/msnodesqlv8");
       `exec deletePaciente '${req.query.usuario}', ${req.query.activoinactivo}`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({ respuesta: 0 }));
         } else {
-          res.status(200).json({ respuesta: "correcto" });
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({  respuesta: "correcto" }));
         }
       }
     );
@@ -36,9 +48,21 @@ const sql = require("mssql/msnodesqlv8");
       )}%' or Nombre like '%${req.query.busqueda}%'`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': '*',
+          'Content-Type': 'application/json',
+        });
+        res.end(JSON.stringify({  respuesta: 0 }));
         } else {
-          res.status(200).json(recordSet.recordset);
+        res.writeHead(200, {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': '*',
+          'Content-Type': 'application/json',
+        });
+        res.end(JSON.stringify(recordSet.recordset));
         }
       }
     );
@@ -47,9 +71,21 @@ const sql = require("mssql/msnodesqlv8");
       `delete Paciente where Nombre = '${req.query.usuario}'; exec createPaciente '${req.query.usuario}','${req.query.apellido}','${req.query.residencia}',${req.query.contacto},'${req.query.estado}',1,${req.query.edad}`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
+      'Content-Type': 'application/json',
+    });
+    res.end(JSON.stringify({  respuesta: 0 }));
         } else {
-          res.status(200).json({ respuesta: "correcto" });
+          res.writeHead(200, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
+      'Content-Type': 'application/json',
+    });
+    res.end(JSON.stringify({ respuesta: "correcto" }));
         }
       }
     );

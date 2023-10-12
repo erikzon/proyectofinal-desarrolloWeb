@@ -20,9 +20,21 @@ export default async function handler(req, res) {
       `exec deleteDoctor '${req.query.usuario}', ${req.query.activoinactivo}`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({ respuesta: 0 }));
         } else {
-          res.status(200).json({ respuesta: "correcto" });
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({ respuesta: "correcto" }));
         }
       }
     );
@@ -31,9 +43,21 @@ export default async function handler(req, res) {
       `select ID_TipoUsuario as value, Nombre as label from Tipo_Usuario`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({ respuesta: 0 }));
         } else {
-          res.status(200).json(recordSet.recordset);
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify(recordSet.recordset));
         }
       }
     );
@@ -45,9 +69,21 @@ export default async function handler(req, res) {
       `exec createDoctor '${req.query.usuario}','${req.query.apellido}',${req.query.colegiado},1,4`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({ respuesta: 0 }));
         } else {
-          res.status(200).json({ respuesta: "correcto" });
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({ respuesta: "correcto" }));
         }
       }
     );
@@ -59,9 +95,21 @@ export default async function handler(req, res) {
       `update Doctor set Nombre = '${req.query.usuario}', Apellido = '${req.query.apellido}', colegiado = ${req.query.colegiado} where colegiado = '${req.query.colegiado}'`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({ respuesta: 0 }));
         } else {
-          res.status(200).json({ respuesta: "correcto" });
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({respuesta: "correcto" }));
         }
       }
     );
