@@ -23,15 +23,31 @@ export default async function handler(req, res) {
       ``,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({  respuesta: 0 }));
         } else {
-          res
-            .status(200)
-            .json({ respuesta: recordSet.recordset[0]?.ModuloPaciente ?? 0 });
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({  respuesta: recordSet.recordset[0]?.ModuloPaciente ?? 0 }));
         }
       }
     );
   } else {
-    res.status(200).json({ respuesta: "en desarrollo" });
+    res.writeHead(200, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
+      'Content-Type': 'application/json',
+    });
+    res.end(JSON.stringify({ respuesta: "en desarrollo" }));
   }
 }

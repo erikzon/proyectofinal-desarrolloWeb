@@ -26,9 +26,21 @@ export default async function handler(req, res) {
           res.status(400).json({ respuesta: 0 });
         } else {
           if (req.query.numero == 2) {
-            res.status(200).json(recordSet);
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify(recordSet));
           } else {
-            res.status(200).json(recordSet.recordset);
+            res.writeHead(200, {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+              'Access-Control-Allow-Headers': '*',
+              'Content-Type': 'application/json',
+            });
+            res.end(JSON.stringify(recordSet.recordset));
           }
         }
       }

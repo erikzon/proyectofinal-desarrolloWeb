@@ -21,9 +21,21 @@ export default async function handler(req, res) {
       `exec deleteUsuario '${req.query.usuario}', ${req.query.activoinactivo}`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
+      'Content-Type': 'application/json',
+    });
+    res.end(JSON.stringify({ respuesta: 0 }));
         } else {
-          res.status(200).json({ respuesta: "correcto" });
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({ respuesta: "correcto" }));
         }
       }
     );
@@ -32,9 +44,21 @@ export default async function handler(req, res) {
       `select ID_TipoUsuario as value, Nombre as label from Tipo_Usuario`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
+      'Content-Type': 'application/json',
+    });
+    res.end(JSON.stringify({ respuesta: 0 }));
         } else {
-          res.status(200).json(recordSet.recordset);
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify(recordSet.recordset));
         }
       }
     );
@@ -43,9 +67,21 @@ export default async function handler(req, res) {
       `exec createUsuario '${req.query.usuario}','${req.query.contrasena}',1,${req.query.tipo}`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+        });
+        res.end(JSON.stringify({ respuesta: 0 }));
         } else {
-          res.status(200).json({ respuesta: "correcto" });
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({  respuesta: "correcto" }));
         }
       }
     );
@@ -55,9 +91,21 @@ export default async function handler(req, res) {
       `update usuario set Usuario = '${req.query.usuario}', Contrasena = '${req.query.contrasena}', FK_ID_TipoUsuario=${req.query.tipo} where Usuario = '${req.query.usuario}'`,
       function (err, recordSet) {
         if (err) {
-          res.status(400).json({ respuesta: 0 });
+          res.writeHead(400, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({ respuesta: 0 }));
         } else {
-          res.status(200).json({ respuesta: "correcto" });
+          res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          res.end(JSON.stringify({  respuesta: "correcto" }));
         }
       }
     );
