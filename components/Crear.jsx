@@ -15,7 +15,7 @@ function Crear() {
 
   useEffect(() => {
     const peticion = fetch(
-      `http://${process.env.SERVER}:3000/api/usuarios`,
+      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/usuarios`,
       { method: "GET" }
     );
     peticion

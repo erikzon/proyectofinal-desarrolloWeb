@@ -45,7 +45,7 @@ export default function Medicina({ recordset }) {
 
   const eliminar = (usuario) => {
     const peticion = fetch(
-      `http://${process.env.SERVER}:3000/api/medicina?usuario=${usuario}`,
+      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/medicina?usuario=${usuario}`,
       { method: "DELETE" }
     );
     peticion
@@ -70,7 +70,7 @@ export default function Medicina({ recordset }) {
         descripcion: descripcionRef.current.value,
         imagen: base64String,
       };
-      const peticion = fetch("http://${process.env.SERVER}:3000/api/medicina", {
+      const peticion = fetch("http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/medicina", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -89,7 +89,7 @@ export default function Medicina({ recordset }) {
 
   const editarMedicina = () => {
     const peticion = fetch(
-      `http://${process.env.SERVER}:3000/api/medicina?usuario=${nombreRef.current.value}&fechaingreso=${fechaIngresoRef.current.value}&fechalote=${fechaLoteRef.current.value}&fechacaducidad=${fechaCaducidadRef.current.value}&casa=${casaRef.current.value}&tipomedicamento=${tipoMedicamentoRef.current.value}`,
+      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/medicina?usuario=${nombreRef.current.value}&fechaingreso=${fechaIngresoRef.current.value}&fechalote=${fechaLoteRef.current.value}&fechacaducidad=${fechaCaducidadRef.current.value}&casa=${casaRef.current.value}&tipomedicamento=${tipoMedicamentoRef.current.value}`,
       { method: "PUT" }
     );
     peticion
