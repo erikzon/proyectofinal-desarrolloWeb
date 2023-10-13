@@ -15,7 +15,7 @@ function ReporteSeis() {
   const [recordset, setRecordset] = useState([]);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    const peticion = fetch(`http://localhost:3000/api/reportes?numero=6`, {
+    const peticion = fetch(`http://loca${process.env.SERVER}lhost:3000/api/reportes?numero=6`, {
       method: "GET",
     });
     peticion

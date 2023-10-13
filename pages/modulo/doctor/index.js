@@ -45,7 +45,7 @@ export default function Doctor({ recordset }) {
 
   const activardesactivar = (usuario, activoinactivo) => {
     const peticion = fetch(
-      `http://localhost:3000/api/doctor?usuario=${usuario}&activoinactivo=${
+      `http://${process.env.SERVER}:3000/api/doctor?usuario=${usuario}&activoinactivo=${
         activoinactivo ? "1" : "0"
       }`,
       { method: "DELETE" }
@@ -60,7 +60,7 @@ export default function Doctor({ recordset }) {
 
   const enviarFormularioDoctor = () => {
     const peticion = fetch(
-      `http://localhost:3000/api/doctor?usuario=${nombreRef.current.value}&apellido=${apellidoRef.current.value}&colegiado=${colegiadoRef.current.value}`,
+      `http://${process.env.SERVER}:3000/api/doctor?usuario=${nombreRef.current.value}&apellido=${apellidoRef.current.value}&colegiado=${colegiadoRef.current.value}`,
       { method: "POST" }
     );
     peticion
@@ -74,7 +74,7 @@ export default function Doctor({ recordset }) {
 
   const editarDoctor = () => {
     const peticion = fetch(
-      `http://localhost:3000/api/doctor?usuario=${nombreRef.current.value}&apellido=${apellidoRef.current.value}&colegiado=${colegiadoRef.current.value}`,
+      `http://${process.env.SERVER}:3000/api/doctor?usuario=${nombreRef.current.value}&apellido=${apellidoRef.current.value}&colegiado=${colegiadoRef.current.value}`,
       { method: "PUT" }
     );
     peticion
@@ -104,7 +104,7 @@ export default function Doctor({ recordset }) {
   };
 
   useEffect(() => {
-    const peticion = fetch(`http://localhost:3000/api/especialidades`, {
+    const peticion = fetch(`http://${process.env.SERVER}:3000/api/especialidades`, {
       method: "GET",
     });
     peticion

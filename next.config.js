@@ -9,7 +9,7 @@ module.exports = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:3000/api/:path*', // Cambia esto a la URL de tu API
+        destination: `http://${process.env.SERVER}:3000/api/:path*`, // Cambia esto a la URL de tu API
       },
     ]
   },

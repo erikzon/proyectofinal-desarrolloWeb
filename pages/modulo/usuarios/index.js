@@ -45,7 +45,7 @@ export default function Usuarios({ recordset }) {
   };
   const activardesactivar = (usuario, activoinactivo) => {
     const peticion = fetch(
-      `http://localhost:3000/api/usuarios?usuario=${usuario}&activoinactivo=${
+      `http://${process.env.SERVER}:3000/api/usuarios?usuario=${usuario}&activoinactivo=${
         activoinactivo ? "1" : "0"
       }`,
       { method: "DELETE" }
@@ -72,7 +72,7 @@ export default function Usuarios({ recordset }) {
 
   const crearUsuario = () => {
     const peticion = fetch(
-      `http://localhost:3000/api/usuarios?usuario=${usuarioRef.current.value}&contrasena=${contrasenaRef.current.value}&tipo=${FK_ID_TipoUsuarioRef.current.value}`,
+      `http://${process.env.SERVER}:3000/api/usuarios?usuario=${usuarioRef.current.value}&contrasena=${contrasenaRef.current.value}&tipo=${FK_ID_TipoUsuarioRef.current.value}`,
       { method: "POST" }
     );
     peticion
@@ -85,7 +85,7 @@ export default function Usuarios({ recordset }) {
   };
   const editarUsuario = () => {
     const peticion = fetch(
-      `http://localhost:3000/api/usuarios?usuario=${usuarioRef.current.value}&contrasena=${contrasenaRef.current.value}&tipo=${FK_ID_TipoUsuarioRef.current.value}`,
+      `http://${process.env.SERVER}:3000/api/usuarios?usuario=${usuarioRef.current.value}&contrasena=${contrasenaRef.current.value}&tipo=${FK_ID_TipoUsuarioRef.current.value}`,
       { method: "PUT" }
     );
     peticion
@@ -98,7 +98,7 @@ export default function Usuarios({ recordset }) {
   };
 
   useEffect(() => {
-    const peticion = fetch(`http://localhost:3000/api/usuarios`, {
+    const peticion = fetch(`http://${process.env.SERVER}:3000/api/usuarios`, {
       method: "GET",
     });
     peticion

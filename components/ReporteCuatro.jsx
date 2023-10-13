@@ -15,7 +15,7 @@ function ReporteCuatro() {
   const [recordset, setRecordset] = useState([]);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    const peticion = fetch(`http://localhost:3000/api/reportes?numero=4`, {
+    const peticion = fetch(`http://${process.env.SERVER}:3000/api/reportes?numero=4`, {
       method: "GET",
     });
     peticion
