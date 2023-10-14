@@ -70,7 +70,7 @@ export default function Medicina({ recordset }) {
         descripcion: descripcionRef.current.value,
         imagen: base64String,
       };
-      const peticion = fetch("http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/medicina", {
+      const peticion = fetch(`http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/medicina`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
