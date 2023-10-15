@@ -4,7 +4,8 @@ const nextConfig = {
   swcMinify: true,
 }
 
-module.exports = {
+const withPWA = require('next-pwa')({
+  dest: 'public',
   async rewrites() {
     return [
       {
@@ -13,6 +14,6 @@ module.exports = {
       },
     ]
   },
-}
+});
 
-module.exports = nextConfig
+export default withPWA(nextConfig);
