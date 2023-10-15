@@ -15,7 +15,7 @@ function ReporteTres() {
   const [recordset, setRecordset] = useState([]);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    const peticion = fetch(`http://localhost:3000/api/reportes?numero=3`, {
+    const peticion = fetch(`http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/reportes?numero=3`, {
       method: "GET",
     });
     peticion

@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   var config = {
     database: process.env.DATABASE,
-    server: process.env.SERVER,
+    server: process.env.NEXT_PUBLIC_SERVER,
     user: process.env.USERDB,
     password: process.env.PASSWORD,
     port: process.env.PORT,

@@ -45,7 +45,7 @@ export default function Paciente({ recordset }) {
     if (inputRef.current.value != null) {
       if (inputRef.current.value.length > 3) {
         const peticion = fetch(
-          `http://localhost:3000/api/paciente?busqueda=${inputRef.current.value}`,
+          `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/paciente?busqueda=${inputRef.current.value}`,
           { method: "GET" }
         );
         peticion
@@ -65,7 +65,7 @@ export default function Paciente({ recordset }) {
 
   const activardesactivar = (usuario, activoinactivo) => {
     const peticion = fetch(
-      `http://localhost:3000/api/paciente?usuario=${usuario}&activoinactivo=${
+      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/paciente?usuario=${usuario}&activoinactivo=${
         activoinactivo ? "1" : "0"
       }`,
       { method: "DELETE" }
@@ -88,7 +88,7 @@ export default function Paciente({ recordset }) {
 
   const enviarFormularioPaciente = () => {
     const peticion = fetch(
-      `http://localhost:3000/api/paciente?usuario=${nombreRef.current.value}&apellido=${apellidoRef.current.value}&residencia=${residenciaRef.current.value}&contacto=${contactoRef.current.value}&estado=${estadoRef.current.value}&edad=${edadRef.current.value}`,
+      `http://loc${process.env.NEXT_PUBLIC_SERVER}alhost:3000/api/paciente?usuario=${nombreRef.current.value}&apellido=${apellidoRef.current.value}&residencia=${residenciaRef.current.value}&contacto=${contactoRef.current.value}&estado=${estadoRef.current.value}&edad=${edadRef.current.value}`,
       { method: "POST" }
     );
     peticion

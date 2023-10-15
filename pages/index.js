@@ -7,6 +7,7 @@ import {
   TextField,
   Button,
 } from "react95";
+require('dotenv').config()
 
 export default function Home() {
   const [usuario, setusuario] = useState("erick");
@@ -14,7 +15,7 @@ export default function Home() {
   const [mostrarErrorCredencialesIncorrectas, setMostrarErrorCredencialesIncorrectas] = useState(false)
 
   const login = (usuario,contrasena) => {
-    const peticion = fetch(`http://localhost:3000/api/login?usuario=${usuario}&contrasena=${contrasena}`);
+    const peticion = fetch(`http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/login?usuario=${usuario}&contrasena=${contrasena}`);
     peticion
       .then((response) => response.json())
       .then((datos) => {
