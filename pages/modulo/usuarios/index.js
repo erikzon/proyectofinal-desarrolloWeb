@@ -32,7 +32,6 @@ export async function getServerSideProps(context) {
   sql.connect(config);
   var request = new sql.Request();
   let { recordset } = await request.query("exec readusuario");
-  console.log(recordset);
   return {
     props: { recordset },
   };
@@ -115,6 +114,7 @@ export default function Usuarios({ recordset }) {
     setModalCrear(true);
     setTimeout(() => {
       usuarioRef.current.value = record.Usuario;
+      
       contrasenaRef.current.value = record.Contrasena.trim();
       FK_ID_TipoUsuarioRef.current.value = record.FK_ID_TipoUsuario;
     }, 200);
@@ -172,10 +172,12 @@ export default function Usuarios({ recordset }) {
                     }}
                   >
                     Usuario
+                    {modoUpdate && "hola"}
                     <TextField
                       placeholder="User Name"
                       fullWidth
                       ref={usuarioRef}
+                      disabled={modoUpdate ? true : false}
                     />
                   </div>
                   <div

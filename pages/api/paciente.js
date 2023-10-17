@@ -72,12 +72,12 @@ const sql = require("mssql/msnodesqlv8");
       function (err, recordSet) {
         if (err) {
           res.writeHead(400, {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': '*',
-      'Content-Type': 'application/json',
-    });
-    res.end(JSON.stringify({  respuesta: 0 }));
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+              });
+          res.end(JSON.stringify({  respuesta: 0 }));
         } else {
           res.writeHead(200, {
       'Access-Control-Allow-Origin': '*',
@@ -89,5 +89,31 @@ const sql = require("mssql/msnodesqlv8");
         }
       }
     );
+  } else if (req.method === "PUT") {
+    const { ID, Identificador, Nombre, Apellido, Residencia, Contacto, Estado, AltaBaja, Edad, Visitas } = req.body;
+  
+    // Use parameterized query to prevent SQL injection
+    const query = `UPDATE Paciente SET Identificador = @Identificador, Nombre = @Nombre, Apellido = @Apellido, Residencia = @Residencia, Contacto = @Contacto, Estado = @Estado, AltaBaja = @AltaBaja, Edad = @Edad, Visitas = @Visitas WHERE ID = @ID`;
+  
+    const request = new sql.Request();
+    request.input('ID', sql.Int, ID);
+    request.input('Identificador', sql.Char(30), Identificador);
+    request.input('Nombre', sql.VarChar(70), Nombre);
+    request.input('Apellido', sql.VarChar(70), Apellido);
+    request.input('Residencia', sql.VarChar(70), Residencia);
+    request.input('Contacto', sql.Int, Contacto);
+    request.input('Estado', sql.VarChar(100), Estado);
+    request.input('AltaBaja', sql.Bit, AltaBaja);
+    request.input('Edad', sql.Int, Edad);
+    request.input('Visitas', sql.Int, Visitas);
+  
+    request.query(query, function (err) {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+        res.status(200).json({ message: 'Record updated successfully' });
+      }
+    });
   }
 }

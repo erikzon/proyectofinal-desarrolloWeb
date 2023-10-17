@@ -88,7 +88,7 @@ export default function Paciente({ recordset }) {
 
   const enviarFormularioPaciente = () => {
     const peticion = fetch(
-      `http://loc${process.env.NEXT_PUBLIC_SERVER}alhost:3000/api/paciente?usuario=${nombreRef.current.value}&apellido=${apellidoRef.current.value}&residencia=${residenciaRef.current.value}&contacto=${contactoRef.current.value}&estado=${estadoRef.current.value}&edad=${edadRef.current.value}`,
+      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/paciente?usuario=${nombreRef.current.value}&apellido=${apellidoRef.current.value}&residencia=${residenciaRef.current.value}&contacto=${contactoRef.current.value}&estado=${estadoRef.current.value}&edad=${edadRef.current.value}`,
       { method: "POST" }
     );
     peticion
@@ -223,8 +223,8 @@ export default function Paciente({ recordset }) {
                       alignItems: "center",
                     }}
                   >
-                    contacto
-                    <TextField fullWidth type="text" ref={contactoRef} />
+                    No. contacto
+                    <TextField fullWidth type="number" ref={contactoRef} />
                   </div>
                   <div
                     style={{
@@ -234,7 +234,7 @@ export default function Paciente({ recordset }) {
                     }}
                   >
                     edad
-                    <TextField fullWidth type="text" ref={edadRef} />
+                    <TextField fullWidth type="number" ref={edadRef} />
                   </div>
                 </section>
                 <Button

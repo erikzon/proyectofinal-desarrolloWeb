@@ -86,7 +86,7 @@ export default async function handler(req, res) {
       }
     );
   } else if (req.method === "PUT") {
-    `update usuario set Usuario = '${req.query.usuario}', Contrasena = '${req.query.contrasena}', FK_ID_TipoUsuario=${req.query.tipo} where Usuario = '${req.query.usuario}'`;
+    console.log(`update usuario set Usuario = '${req.query.usuario}', Contrasena = '${req.query.contrasena}', FK_ID_TipoUsuario=${req.query.tipo} where Usuario = '${req.query.usuario}'`);
     await request.query(
       `update usuario set Usuario = '${req.query.usuario}', Contrasena = '${req.query.contrasena}', FK_ID_TipoUsuario=${req.query.tipo} where Usuario = '${req.query.usuario}'`,
       function (err, recordSet) {

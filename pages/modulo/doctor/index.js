@@ -195,7 +195,7 @@ export default function Doctor({ recordset }) {
                     }}
                   >
                     colegiado
-                    <TextField fullWidth type="text" ref={colegiadoRef} />
+                    <TextField fullWidth type="number" ref={colegiadoRef} />
                   </div>
                   <div
                     style={{

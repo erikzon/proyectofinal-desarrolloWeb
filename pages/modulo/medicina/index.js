@@ -78,7 +78,7 @@ export default function Medicina({ recordset }) {
       peticion
         .then((response) => response.json())
         .then((datos) => {
-          refreshData();
+          // refreshData();
           setModalCrear(false);
         })
         .catch((e) => console.log(e));
@@ -196,7 +196,7 @@ export default function Medicina({ recordset }) {
                     }}
                   >
                     Fecha Ingreso
-                    <TextField fullWidth type="text" ref={fechaIngresoRef} />
+                    <TextField fullWidth type="date" ref={fechaIngresoRef} />
                   </div>
                   <div
                     style={{
@@ -206,7 +206,7 @@ export default function Medicina({ recordset }) {
                     }}
                   >
                     Fecha Lote
-                    <TextField fullWidth type="text" ref={fechaLoteRef} />
+                    <TextField fullWidth type="date" ref={fechaLoteRef} />
                   </div>
                 </section>
                 <section>
@@ -218,7 +218,7 @@ export default function Medicina({ recordset }) {
                     }}
                   >
                     Fecha Caducidad
-                    <TextField fullWidth type="text" ref={fechaCaducidadRef} />
+                    <TextField fullWidth type="date" ref={fechaCaducidadRef} />
                   </div>
                   <div
                     style={{
