@@ -38,6 +38,7 @@ export default function Paciente({ recordset }) {
     router.replace(router.asPath);
   };
   const inputRef = useRef(null);
+  const [modoUpdate, setModoUpdate] = useState(false);
   const [resultadoBusqueda, setResultadoBusqueda] = useState();
   const [usarBusqueda, setUsarBusqueda] = useState(false);
   const [modalCrear, setModalCrear] = useState(false);
@@ -85,6 +86,7 @@ export default function Paciente({ recordset }) {
   const contactoRef = useRef(' ');
   const estadoRef = useRef(' ');
   const edadRef = useRef(' ');
+  const identificadorRef = useRef(' ');
 
   const enviarFormularioPaciente = () => {
     const peticion = fetch(
@@ -101,8 +103,40 @@ export default function Paciente({ recordset }) {
       .catch((e) => console.log(e));
   };
 
+  const enviarFormularioEdicionPaciente = () => {
+    const data = {
+      usuario: nombreRef.current.value,
+      apellido: apellidoRef.current.value,
+      residencia: residenciaRef.current.value,
+      contacto: contactoRef.current.value,
+      estado: estadoRef.current.value,
+      edad: edadRef.current.value,
+      identificador: identificadorRef.current.value
+    };
+  
+    const peticion = fetch(`http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/paciente`, {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+  
+    peticion
+      .then((response) => response.json())
+      .then((datos) => {
+        refreshData();
+        setUsarBusqueda(false);
+        setModalCrear(false);
+      })
+      .catch((e) => console.log(e));
+  };
+  
+
   const editar = (record) => {
     setModalCrear(true);
+    setModoUpdate(true);
+    console.log(record.Identificador);
     setTimeout(() => {
       nombreRef.current.value = record.Nombre;
       apellidoRef.current.value = record.Apellido;
@@ -110,7 +144,14 @@ export default function Paciente({ recordset }) {
       contactoRef.current.value = record.Contacto;
       estadoRef.current.value = record.Estado;
       edadRef.current.value = record.Edad;
+      identificadorRef.current.value = record.Identificador;
     }, 200);
+  }
+
+  const botonCrearClickado = () => {
+    console.log("pase aca");
+    setModalCrear(!modalCrear)
+    setModoUpdate(false)
   }
 
   return (
@@ -150,7 +191,7 @@ export default function Paciente({ recordset }) {
               Buscar
             </Button>
             {habilitado && (
-              <Button type="button" onClick={() => setModalCrear(!modalCrear)}>
+              <Button type="button" onClick={() => botonCrearClickado()}>
                 {modalCrear ? "Cancelar" : "crear"}
               </Button>
             )}
@@ -174,6 +215,14 @@ export default function Paciente({ recordset }) {
                 }}
               >
                 <section>
+                <div
+                    style={{
+                      display: "none"
+                    }}
+                  >
+                    identificar
+                    <TextField fullWidth ref={identificadorRef} />
+                  </div>
                   <div
                     style={{
                       display: "flex",
@@ -237,12 +286,17 @@ export default function Paciente({ recordset }) {
                     <TextField fullWidth type="number" ref={edadRef} />
                   </div>
                 </section>
-                <Button
-                  type="button"
-                  onClick={() => enviarFormularioPaciente()}
-                >
-                  Crear
-                </Button>
+                {modoUpdate ? (
+                  <Button type="button" onClick={() => enviarFormularioEdicionPaciente()}>
+                    Editar
+                  </Button>
+                ) : (
+                  <Button
+                    type="button" onClick={() => enviarFormularioPaciente()}
+                  >
+                    Crear
+                  </Button>
+                )}
               </div>
             </form>
           )}

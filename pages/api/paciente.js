@@ -90,23 +90,20 @@ const sql = require("mssql/msnodesqlv8");
       }
     );
   } else if (req.method === "PUT") {
-    const { ID, Identificador, Nombre, Apellido, Residencia, Contacto, Estado, AltaBaja, Edad, Visitas } = req.body;
-  
+    const { usuario, apellido, residencia, contacto, estado, edad, identificador } = req.body;
+
     // Use parameterized query to prevent SQL injection
-    const query = `UPDATE Paciente SET Identificador = @Identificador, Nombre = @Nombre, Apellido = @Apellido, Residencia = @Residencia, Contacto = @Contacto, Estado = @Estado, AltaBaja = @AltaBaja, Edad = @Edad, Visitas = @Visitas WHERE ID = @ID`;
-  
+    const query = `UPDATE Paciente SET Nombre = @Nombre, Apellido = @apellido, Residencia = @residencia, Contacto = @contacto, Estado = @estado, Edad = @edad WHERE Identificador = @identificador`;
+
     const request = new sql.Request();
-    request.input('ID', sql.Int, ID);
-    request.input('Identificador', sql.Char(30), Identificador);
-    request.input('Nombre', sql.VarChar(70), Nombre);
-    request.input('Apellido', sql.VarChar(70), Apellido);
-    request.input('Residencia', sql.VarChar(70), Residencia);
-    request.input('Contacto', sql.Int, Contacto);
-    request.input('Estado', sql.VarChar(100), Estado);
-    request.input('AltaBaja', sql.Bit, AltaBaja);
-    request.input('Edad', sql.Int, Edad);
-    request.input('Visitas', sql.Int, Visitas);
-  
+    request.input('Identificador', sql.Char(30), identificador.trim());
+    request.input('Nombre', sql.VarChar(70), usuario);
+    request.input('apellido', sql.VarChar(70), apellido);
+    request.input('residencia', sql.VarChar(70), residencia);
+    request.input('contacto', sql.Int, contacto);
+    request.input('estado', sql.VarChar(100), estado);
+    request.input('edad', sql.Int, edad);
+
     request.query(query, function (err) {
       if (err) {
         console.error(err);

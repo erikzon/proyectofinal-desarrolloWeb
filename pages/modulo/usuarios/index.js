@@ -172,7 +172,6 @@ export default function Usuarios({ recordset }) {
                     }}
                   >
                     Usuario
-                    {modoUpdate && "hola"}
                     <TextField
                       placeholder="User Name"
                       fullWidth
