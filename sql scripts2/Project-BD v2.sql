@@ -30,8 +30,7 @@ create table Doctor(
 	CONSTRAINT FK_ID_Especialidad foreign key (FK_ID_Especialidad)
 	REFERENCES Especialidad (ID_Especialida)   ON DELETE CASCADE
   ON UPDATE CASCADE
-);
-
+);        
 Create table Medicina(
 ID_Medicina			int identity(1,1) primary key(ID_Medicina),
 Nombre				varchar(100)	NOT NULL,
@@ -386,14 +385,16 @@ go
 create proc readUsuario
 as
 begin try
-select * from Usuario
+SELECT U.Usuario, U.Contrasena, U.ActivoInactivo, TU.Nombre as 'TipoUsuario'
+FROM Usuario U
+JOIN Tipo_Usuario TU ON U.FK_ID_TipoUsuario = TU.ID_TipoUsuario;
+
 end try 
 begin catch
 select
 ERROR_PROCEDURE()as ErrorProcedure,
 ERROR_MESSAGE() as ErrorMesage
 end catch
-
 go
 
 go 
@@ -742,6 +743,7 @@ exec createPaciente 'Kevin','Illu','zacapa',32456000,'golpeado',1,20
 exec createPaciente 'Jhonatan','Solares','puerto rico',42476578,'raspado',1,19
 exec createPaciente 'Edgar','Oliva','miami',37777778,'dolor abdominal',1,32
 exec createPaciente 'Erick','Tellez','EEUU',30000008,'dolor de espalda',1,26
+exec createPaciente 'nombre','apellido','reisndeica',contacto,'estado',1,3432
 exec createPaciente 'Donald','Tellez Olvia','New York',30001100,'dolor de rodilla',1,27
 
 exec readEspecialidad

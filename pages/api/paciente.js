@@ -91,8 +91,6 @@ const sql = require("mssql/msnodesqlv8");
     );
   } else if (req.method === "PUT") {
     const { usuario, apellido, residencia, contacto, estado, edad, identificador } = req.body;
-
-    // Use parameterized query to prevent SQL injection
     const query = `UPDATE Paciente SET Nombre = @Nombre, Apellido = @apellido, Residencia = @residencia, Contacto = @contacto, Estado = @estado, Edad = @edad WHERE Identificador = @identificador`;
 
     const request = new sql.Request();

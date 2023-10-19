@@ -173,7 +173,7 @@ export default function Usuarios({ recordset }) {
                   >
                     Usuario
                     <TextField
-                      placeholder="User Name"
+                      placeholder="nombre"
                       fullWidth
                       ref={usuarioRef}
                       disabled={modoUpdate ? true : false}
@@ -236,7 +236,7 @@ export default function Usuarios({ recordset }) {
                   <TableDataCell>
                     {record.ActivoInactivo ? "activo" : "inactivo"}
                   </TableDataCell>
-                  <TableDataCell>{record.FK_ID_TipoUsuario}</TableDataCell>
+                  <TableDataCell>{record.TipoUsuario}</TableDataCell>
                   <TableDataCell>
                     <Button onClick={() => editar(record)}>Editar</Button>
                     <Button

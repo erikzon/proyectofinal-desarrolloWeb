@@ -1,10 +1,10 @@
 erDiagram
     Especialidad ||--o{ Doctor : FK_ID_Especialidad
     Doctor ||--o{ Historial_Paciente : FK_ID_Doctor
-    Doctor ||--o{ Receta : FK_ID_Doctor1
-    Medicina ||--o{ Receta : FK_ID_Medicina
+    Doctor ||--o{ Habitacion : FK_ID_Doctor1
+    Medicina ||--o{ Habitacion : FK_ID_Medicina
     Paciente ||--o{ Historial_Paciente : FK_ID_Paciente
-    Paciente ||--o{ Receta : FK_ID_Paciente1
+    Paciente ||--o{ Habitacion : FK_ID_Paciente1
     Tipo_Usuario ||--o{ Usuario : FK_ID_TipoUsuario
     Especialidad {
         int ID_Especialida
@@ -29,6 +29,10 @@ erDiagram
         smalldatetime Fecha_Caducidad
         varchar Casa
         varchar TipoMedicamento
+        varchar Descripcion
+        varchar Imagen
+        varchar Imagen
+        
     }
     Paciente {
         int ID
@@ -63,11 +67,10 @@ erDiagram
         smalldatetime FechaSalida
         bit Accidente
         bit Enfermedad
+        varchar Examen
     }
-    Receta {
-        int ID_Receta
+    Habitacion {
+        int ID_Habitacion
         int FK_ID_Doctor1
-        int FK_ID_Medicina
         int FK_ID_Paciente1
-        smalldatetime FechaReceta
     }
