@@ -90,7 +90,12 @@ values
 ( 102, 'Habitación compartida', 1),
 ( 201, 'Habitación individual', 2),
 ( 202, 'Habitación compartida', 2),
-( 301, 'Habitación individual', 3);
+( 301, 'Habitación individual', 3),
+( 401, 'Habitación individual', 1),
+( 402, 'Habitación compartida', 1),
+( 501, 'Habitación individual', 2),
+( 502, 'Habitación compartida', 2),
+( 601, 'Habitación individual', 3);
 
 
 -- Insertar pacientes en la tabla Paciente
@@ -104,48 +109,6 @@ values
 
 
 
--- go
--- create proc createPaciente
--- @Nombre             varchar(70) ,
--- @Apellido           varchar(70) ,
--- @Residencia         varchar(70) , 
--- @Contacto           int ,
--- @Estado             varchar(100),
--- @AltaBaja           bit,
--- @Edad               int,
--- @ClinicaID          int,
--- @HabitacionID       int
-
--- as
--- begin try
-
--- declare @anio as char(4)
--- set @anio = (select CONVERT(char(4),(SELECT YEAR(GETDATE()))));
-
--- declare @idtmp as int 
--- set @idtmp = (select top 1 ID from Paciente ORDER BY ID DESC);
-
--- if @idtmp > 0
--- 	set @idtmp = (@idtmp + 1)
--- else
--- 	set @idtmp = 1
-
--- declare @Idt as char (4)
--- set @Idt = ((select CONVERT(char(4),@idtmp)));
-
--- declare @Identificador as CHAR(30)
--- set @Identificador = CONCAT(@Idt,@anio);
-
--- insert into Paciente values (@idtmp, @Identificador, @Nombre, @Apellido, @Residencia, @Contacto, @Estado, @AltaBaja, @Edad,1, @ClinicaID, @HabitacionID)
-
--- end try
-
--- begin catch
--- 	select 
--- 	ERROR_PROCEDURE()as ErrorProcedure,
--- 	ERROR_MESSAGE() as ErrorMesage
--- end catch
--- go
 
 
 go
@@ -209,9 +172,8 @@ begin catch
 	ERROR_PROCEDURE()as ErrorProcedure,
 	ERROR_MESSAGE() as ErrorMesage
 end catch
-go
-use proyecto;
-drop proc createHistorial_Paciente
+GO
+
 go
 create proc createReceta
 @FK_ID_Doctor		int,
@@ -231,13 +193,6 @@ begin catch
 end catch
 go
 
-
-
-
-----/////////////////////////////////////////---
-----/////////////////////////////////////////---
-----/////////////////////////////////////////---
-----/////////////////////////////////////////---
 ----/////////////////////////////////////////---
 ---Read
 go
@@ -284,7 +239,6 @@ ERROR_MESSAGE() as ErrorMesage
 end catch
 go
 
-drop proc readMedicina
 go
 create proc readTipo_usuario
 as 
@@ -318,14 +272,16 @@ go
 create proc readPaciente
 as
 begin try
-select * from Paciente
+SELECT P.ID as 'Identificador', P.Nombre, P.Apellido, P.Residencia, P.Contacto, P.Estado, P.AltaBaja, P.Edad, P.Visitas, P.ClinicaID, H.Numero as 'Habitacion'
+FROM Paciente P
+JOIN Habitacion H ON P.HabitacionID = H.ID;
 end try 
 begin catch
 select
 ERROR_PROCEDURE()as ErrorProcedure,
 ERROR_MESSAGE() as ErrorMesage
 end catch
-go
+GO
 
 go
 create proc readReceta
@@ -655,22 +611,16 @@ end catch
 go
 
 -- exec readPaciente
--- exec createPaciente 'Victor','Guerra','guate',32656578,'vivo',1,22
--- exec createPaciente 'Kevin','Illu','zacapa',32456000,'golpeado',1,20
--- exec createPaciente 'Jhonatan','Solares','puerto rico',42476578,'raspado',1,19
--- exec createPaciente 'Edgar','Oliva','miami',37777778,'dolor abdominal',1,32
--- exec createPaciente 'Erick','Tellez','EEUU',30000008,'dolor de espalda',1,26
--- exec createPaciente 'nombre','apellido','reisndeica',contacto,'estado',1,3432
--- exec createPaciente 'Donald','Tellez Olvia','New York',30001100,'dolor de rodilla',1,27
 
 -- exec readEspecialidad
 
 exec createEspecialidad 'Otorinoralingolo','revisa nariz y esas cosas',1
 exec createEspecialidad 'Anastesiologia','Anestesia a la vieja escuela',1
-exec createEspecialidad 'Cardiologia','atender la patolog�a y procedimientos cardiol�gicos en pacientes adultos y pedi�tricos',1
-exec createEspecialidad 'Dermatologia','aplicar� la terap�utica espec�fica,para la piel',1
-exec createEspecialidad 'Hematolog�a','valorara en forma integral a los pacientes adultos con problemas hematologicos',1
-exec createEspecialidad 'Nefrologia','diagn�stico y tratamiento de las enfermedades renales,equilibrio hidro-eletrolitico y �cido b�sico',1
+exec createEspecialidad 'Cardiología','atender la patología y procedimientos cardiológicos en pacientes adultos y pediátricos',1
+exec createEspecialidad 'Dermatología','aplicará la terapéutica específica, para la piel',1
+exec createEspecialidad 'Hematología','valorará en forma integral a los pacientes adultos con problemas hematológicos',1
+exec createEspecialidad 'Nefrología','diagnóstico y tratamiento de las enfermedades renales, equilibrio hidro-electrolítico y ácido básico',1
+
 
 
 -- exec readDoctor
@@ -710,9 +660,6 @@ exec createHistorial_Paciente 2,2,'2022-10-23','2022-10-23',0,1
 exec createHistorial_Paciente 3,3,'2022-10-23','2022-10-23',1,0
 exec createHistorial_Paciente 4,4,'2022-10-23','2022-10-23',0,1
 exec createHistorial_Paciente 5,5,'2022-10-23','2022-10-23',1,0
-exec createHistorial_Paciente 6,6,'2022-10-23','2022-10-23',0,1
-
-
 
 
 exec createTipo_Usuario 'Administrado',1,1,1,1
@@ -791,3 +738,5 @@ GO
 
 -- exec readMedicina
 -- select * from Medicina where ID_Medicina = 2
+
+

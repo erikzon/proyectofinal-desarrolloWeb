@@ -9,6 +9,7 @@ import {
   WindowHeader,
   TextField,
   Button,
+  Select
 } from "react95";
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -24,14 +25,34 @@ export async function getServerSideProps(context) {
     },
   };
   sql.connect(config);
-  var request = new sql.Request();
-  let { recordset } = await request.query("exec readPaciente");
+  // Consulta para obtener pacientes
+  const requestPacientes = new sql.Request();
+  const { recordset: pacientes } = await requestPacientes.query("exec readPaciente");
+
+  // Consulta para obtener habitaciones disponibles
+  const requestHabitaciones = new sql.Request();
+  const { recordset: habitacionesDisponibles } = await requestHabitaciones.query(`
+  SELECT Concat(H.Numero, ' de la clinica ', H.ClinicaID) as 'descripcion', H.Numero, H.ClinicaID
+  FROM Habitacion H
+  WHERE NOT EXISTS (
+      SELECT 1
+      FROM Paciente P
+      WHERE P.HabitacionID = H.ID
+  );
+  
+  `);
+
   return {
-    props: { recordset },
+    props: {
+      recordset: pacientes,
+      habitacionesDisponibles,
+    },
   };
 }
 
-export default function Paciente({ recordset }) {
+
+
+export default function Paciente({ recordset: pacientes, habitacionesDisponibles }) {
   const router = useRouter();
   const habilitado = location.href.split("=")[1] === "true";
   const refreshData = () => {
@@ -42,6 +63,12 @@ export default function Paciente({ recordset }) {
   const [resultadoBusqueda, setResultadoBusqueda] = useState();
   const [usarBusqueda, setUsarBusqueda] = useState(false);
   const [modalCrear, setModalCrear] = useState(false);
+
+  const opcionesHabitaciones = habitacionesDisponibles.map(habitacion => ({
+    label: habitacion.descripcion,
+    value: habitacion.Numero,
+  }));
+
   const buscar = () => {
     if (inputRef.current.value != null) {
       if (inputRef.current.value.length > 3) {
@@ -87,10 +114,11 @@ export default function Paciente({ recordset }) {
   const estadoRef = useRef(' ');
   const edadRef = useRef(' ');
   const identificadorRef = useRef(' ');
+  const habitacionRef = useRef(1);
 
   const enviarFormularioPaciente = () => {
     const peticion = fetch(
-      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/paciente?usuario=${nombreRef.current.value}&apellido=${apellidoRef.current.value}&residencia=${residenciaRef.current.value}&contacto=${contactoRef.current.value}&estado=${estadoRef.current.value}&edad=${edadRef.current.value}`,
+      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/paciente?usuario=${nombreRef.current.value}&apellido=${apellidoRef.current.value}&residencia=${residenciaRef.current.value}&contacto=${contactoRef.current.value}&estado=${estadoRef.current.value}&edad=${edadRef.current.value}&habitacion=${habitacionRef.current.value}`,
       { method: "POST" }
     );
     peticion
@@ -111,7 +139,8 @@ export default function Paciente({ recordset }) {
       contacto: contactoRef.current.value,
       estado: estadoRef.current.value,
       edad: edadRef.current.value,
-      identificador: identificadorRef.current.value
+      identificador: identificadorRef.current.value,
+      numeroHabitacion: habitacionRef.current.value
     };
   
     const peticion = fetch(`http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/paciente`, {
@@ -136,7 +165,6 @@ export default function Paciente({ recordset }) {
   const editar = (record) => {
     setModalCrear(true);
     setModoUpdate(true);
-    console.log(record.Identificador);
     setTimeout(() => {
       nombreRef.current.value = record.Nombre;
       apellidoRef.current.value = record.Apellido;
@@ -284,6 +312,21 @@ export default function Paciente({ recordset }) {
                     edad
                     <TextField fullWidth type="number" ref={edadRef} />
                   </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                      alignItems: "center",
+                    }}
+                  >
+                    Habitacion
+                    <Select
+                      options={opcionesHabitaciones}
+                      menuMaxHeight={160}
+                      width={250}
+                      ref={habitacionRef}
+                    />
+                  </div>
                 </section>
                 {modoUpdate ? (
                   <Button type="button" onClick={() => enviarFormularioEdicionPaciente()}>
@@ -302,7 +345,6 @@ export default function Paciente({ recordset }) {
           <Table>
             <TableHead>
               <TableRow>
-                <TableHeadCell> Identificador </TableHeadCell>
                 <TableHeadCell> Nombre </TableHeadCell>
                 <TableHeadCell> Apellido </TableHeadCell>
                 <TableHeadCell> Residencia </TableHeadCell>
@@ -311,14 +353,15 @@ export default function Paciente({ recordset }) {
                 <TableHeadCell> AltaBaja </TableHeadCell>
                 <TableHeadCell> Edad </TableHeadCell>
                 <TableHeadCell> Visitas </TableHeadCell>
+                <TableHeadCell> Clinica </TableHeadCell>
+                <TableHeadCell> Habitacion </TableHeadCell>
                 {habilitado && <TableHeadCell> Accion </TableHeadCell>}
               </TableRow>
             </TableHead>
             <TableBody>
               {!usarBusqueda
-                ? recordset.map((record) => (
+                ? pacientes.map((record) => (
                     <TableRow key={record.ID}>
-                      <TableDataCell>{record.Identificador}</TableDataCell>
                       <TableDataCell>{record.Nombre}</TableDataCell>
                       <TableDataCell>{record.Apellido}</TableDataCell>
                       <TableDataCell>{record.Residencia}</TableDataCell>
@@ -329,9 +372,12 @@ export default function Paciente({ recordset }) {
                       </TableDataCell>
                       <TableDataCell>{record.Edad}</TableDataCell>
                       <TableDataCell>{record.Visitas}</TableDataCell>
+                      <TableDataCell>{record.ClinicaID}</TableDataCell>
+                      <TableDataCell>{record.Habitacion}</TableDataCell>
                       {habilitado && (
                         <TableDataCell>
                           <Button onClick={() => editar(record)}>Editar</Button>
+                          <br/>
                           <Button
                             onClick={() =>
                               activardesactivar(record.Nombre, !record.AltaBaja)
@@ -345,7 +391,6 @@ export default function Paciente({ recordset }) {
                   ))
                 : resultadoBusqueda.map((record) => (
                     <TableRow key={record.ID}>
-                      <TableDataCell>{record.Identificador}</TableDataCell>
                       <TableDataCell>{record.Nombre}</TableDataCell>
                       <TableDataCell>{record.Apellido}</TableDataCell>
                       <TableDataCell>{record.Residencia}</TableDataCell>
@@ -356,9 +401,12 @@ export default function Paciente({ recordset }) {
                       </TableDataCell>
                       <TableDataCell>{record.Edad}</TableDataCell>
                       <TableDataCell>{record.Visitas}</TableDataCell>
+                      <TableDataCell>{record.ClinicaID}</TableDataCell>
+                      <TableDataCell>{record.HabitacionID}</TableDataCell>
                       {habilitado && (
                         <TableDataCell>
                           <Button onClick={() => editar(record)}>Editar</Button>
+                          <br/>
                           <Button
                             onClick={() =>
                               activardesactivar(record.Nombre, !record.AltaBaja)

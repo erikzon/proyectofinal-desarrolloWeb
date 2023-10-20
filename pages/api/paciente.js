@@ -68,7 +68,12 @@ const sql = require("mssql/msnodesqlv8");
     );
   } else if (req.method === "POST") {
     await request.query(
-      `delete Paciente where Nombre = '${req.query.usuario}'; exec createPaciente '${req.query.usuario}','${req.query.apellido}','${req.query.residencia}',${req.query.contacto},'${req.query.estado}',1,${req.query.edad}`,
+      `delete Paciente where Nombre = '${req.query.usuario}'; 
+      declare @HabitacionID int;
+      select @HabitacionID = ID from Habitacion where Numero = ${req.query.habitacion};
+      insert into Paciente (Identificador, Nombre, Apellido, Residencia, Contacto, Estado, AltaBaja, Edad, Visitas, ClinicaID, HabitacionID)
+values
+( 'PAC001', '${req.query.usuario}', '${req.query.apellido}', '${req.query.residencia}', ${req.query.contacto}, '${req.query.estado}', 1, ${req.query.edad}, 2, 1, @HabitacionID)`,
       function (err, recordSet) {
         if (err) {
           res.writeHead(400, {
@@ -90,8 +95,11 @@ const sql = require("mssql/msnodesqlv8");
       }
     );
   } else if (req.method === "PUT") {
-    const { usuario, apellido, residencia, contacto, estado, edad, identificador } = req.body;
-    const query = `UPDATE Paciente SET Nombre = @Nombre, Apellido = @apellido, Residencia = @residencia, Contacto = @contacto, Estado = @estado, Edad = @edad WHERE Identificador = @identificador`;
+    const { usuario, apellido, residencia, contacto, estado, edad, identificador,numeroHabitacion } = req.body;
+    const query = `
+    declare @HabitacionID int;
+    select @HabitacionID = ID from Habitacion where Numero = @numeroHabitacion;
+    UPDATE Paciente SET Nombre = @Nombre, Apellido = @apellido, Residencia = @residencia, Contacto = @contacto, Estado = @estado, Edad = @edad,HabitacionID = @HabitacionID  WHERE ID = @identificador`;
 
     const request = new sql.Request();
     request.input('Identificador', sql.Char(30), identificador.trim());
@@ -101,6 +109,7 @@ const sql = require("mssql/msnodesqlv8");
     request.input('contacto', sql.Int, contacto);
     request.input('estado', sql.VarChar(100), estado);
     request.input('edad', sql.Int, edad);
+    request.input('numeroHabitacion', sql.Int, numeroHabitacion);
 
     request.query(query, function (err) {
       if (err) {
