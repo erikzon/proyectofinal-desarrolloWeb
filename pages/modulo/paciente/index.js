@@ -149,7 +149,6 @@ export default function Paciente({ recordset }) {
   }
 
   const botonCrearClickado = () => {
-    console.log("pase aca");
     setModalCrear(!modalCrear)
     setModoUpdate(false)
   }

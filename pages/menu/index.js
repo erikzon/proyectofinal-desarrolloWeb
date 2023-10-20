@@ -76,7 +76,7 @@ export default function Home({recordset}) {
               disabled={!recordset[0].ModuloDoctor}
               onClick={() => Router.push("/modulo/doctor")}
             >
-              Modulo Doctor
+              Modulo Empleados
             </Button>
             <Button
               type="submit"
@@ -84,7 +84,7 @@ export default function Home({recordset}) {
               disabled={!recordset[0].ModuloMedicina}
               onClick={() => Router.push("/modulo/medicina")}
             >
-              Modulo Medicina
+              Modulo Inventario
             </Button>
             <Button
               type="submit"
@@ -92,7 +92,15 @@ export default function Home({recordset}) {
               disabled={!recordset[0].ModuloReporte}
               onClick={() => Router.push("/modulo/reportes")}
             >
-              Modulo Reportes
+              Historial Clinico de Pacientes
+            </Button>
+            <Button
+              type="submit"
+              value="login"
+              disabled={!recordset[0].ModuloReporte}
+              onClick={() => Router.push("/modulo/usuarios")}
+            >
+              Habitaciones Disponibles
             </Button>
             <Button
               type="submit"

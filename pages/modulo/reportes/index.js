@@ -33,7 +33,7 @@ export default function Reportes(props) {
             justifyContent: "center",
           }}
         >
-          <WindowHeader>Reportes</WindowHeader>
+          <WindowHeader>Historial Clinico</WindowHeader>
           <h4>1. Los pacientes que más visitas han tenido. </h4>
           <div
             style={{ width: "95%", margin: "0 auto", paddingBottom: "1rem" }}

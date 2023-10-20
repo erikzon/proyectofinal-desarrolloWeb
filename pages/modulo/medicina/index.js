@@ -17,14 +17,17 @@ import { useRef, useState } from "react";
 export async function getServerSideProps(context) {
   const sql = require("mssql/msnodesqlv8");
   var config = {
-    database: "proyecto",
-    server: "ERICK-LAPTO\\SQLEXPRESS",
-    driver: "msnodesqlv8",
+    database: process.env.DATABASE,
+    server: process.env.NEXT_PUBLIC_SERVER,
+    user: process.env.USERDB,
+    password: process.env.PASSWORD,
+    port: process.env.PORT,
+    driver: process.env.DRIVER,
     options: {
-      trustedConnection: true,
+      trustedConnection: process.env.TRUSTED_CONNECTION === 'true',
     },
   };
-
+  
   sql.connect(config);
   var request = new sql.Request();
   let { recordset } = await request.query("exec readMedicina");
@@ -36,7 +39,8 @@ export async function getServerSideProps(context) {
 export default function Medicina({ recordset }) {
   const router = useRouter();
   const refreshData = () => {
-    router.replace(router.asPath);
+    // router.replace(router.asPath);
+    window.location.reload();
   };
 
   const [modalCrear, setModalCrear] = useState(false);
@@ -78,7 +82,7 @@ export default function Medicina({ recordset }) {
       peticion
         .then((response) => response.json())
         .then((datos) => {
-          // refreshData();
+          refreshData();
           setModalCrear(false);
         })
         .catch((e) => console.log(e));
@@ -112,13 +116,18 @@ export default function Medicina({ recordset }) {
 
   const editar = (record) => {
     setModalCrear(true);
+    console.log(record);
+    const fechaIngresoParts = record.Ingreso.split('/');
+    const fechaLoteParts = record.Lote.split('/');
+    const fechaCaducidadParts = record.Caducidad.split('/');
     setTimeout(() => {
-      nombreRef.current.value = record.Nombre;
-      fechaIngresoRef.current.value = record.Fecha_Ingreso;
-      fechaLoteRef.current.value = record.Fecha_Lote;
-      fechaCaducidadRef.current.value = record.Fecha_Caducidad;
+      nombreRef.current.value = record.Nombre
+      fechaIngresoRef.current.value = `${fechaIngresoParts[2]}-${fechaIngresoParts[1]}-${fechaIngresoParts[0]}`;
+      fechaLoteRef.current.value = `${fechaLoteParts[2]}-${fechaLoteParts[1]}-${fechaLoteParts[0]}`;
+      fechaCaducidadRef.current.value = `${fechaCaducidadParts[2]}-${fechaCaducidadParts[1]}-${fechaCaducidadParts[0]}`;
       casaRef.current.value = record.Casa;
-      tipoMedicamentoRef.current.value = record.TipoMedicamento;
+      tipoMedicamentoRef.current.value = record.Tipo;
+      descripcionRef.current.value = record.Descripcion;
     }, 200);
     setModoUpdate(true);
   };
@@ -137,7 +146,7 @@ export default function Medicina({ recordset }) {
         }}
       >
         <Window style={{ width: "95%" }}>
-          <WindowHeader>Medicina</WindowHeader>
+          <WindowHeader>Inventario</WindowHeader>
           <div
             style={{
               display: "flex",
@@ -228,7 +237,7 @@ export default function Medicina({ recordset }) {
                     }}
                   >
                     Casa
-                    <TextField fullWidth type="text" ref={casaRef} />
+                    <TextField fullWidth type="text" ref={casaRef} disabled={modoUpdate ? true : false}/>
                   </div>
                   <div
                     style={{
@@ -262,25 +271,16 @@ export default function Medicina({ recordset }) {
                 Descripción
                 <TextField fullWidth type="text" ref={descripcionRef} />
               </div>
-              {/* <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  alignItems: "center",
-                }}
-              >
-                URL de la imagen
-                <TextField fullWidth type="text" ref={ImagenRef} />
-              </div> */}
               <div
                 style={{
                   display: "flex",
                   gap: "1rem",
                   alignItems: "center",
+                  margin: "1rem"
                 }}
               >
                 Imagen
-                <input type="file" ref={ImagenRef} />
+                <input type="file" ref={ImagenRef} disabled={modoUpdate ? true : false} />
               </div>
             </form>
           )}
@@ -295,20 +295,22 @@ export default function Medicina({ recordset }) {
             </TableHead>
             <TableBody>
               {recordset.map((record) => (
-                <TableRow key={record.ID_Medicina}>
-                  <TableDataCell>{record.ID_Medicina}</TableDataCell>
+                <TableRow key={record.ID}>
+                  <TableDataCell>{record.ID}</TableDataCell>
                   <TableDataCell>{record.Nombre}</TableDataCell>
                   <TableDataCell>{record.Perecedero ? "X" : ""}</TableDataCell>
-                  <TableDataCell>{record.Fecha_Ingreso}</TableDataCell>
-                  <TableDataCell>{record.Fecha_Lote}</TableDataCell>
-                  <TableDataCell>{record.Fecha_Caducidad}</TableDataCell>
+                  <TableDataCell>{record.Ingreso}</TableDataCell>
+                  <TableDataCell>{record.Lote}</TableDataCell>
+                  <TableDataCell>{record.Caducidad}</TableDataCell>
                   <TableDataCell>{record.Casa}</TableDataCell>
-                  <TableDataCell>{record.TipoMedicamento}</TableDataCell>
+                  <TableDataCell>{record.Tipo}</TableDataCell>
                   <TableDataCell><img src={`data:image/png;base64,${record.Imagen}`} alt="Imagen" style={{width: '35px', height: '35px'}}/></TableDataCell>
+                  <TableDataCell>{record.Descripcion.substring(0,6)+'...'}</TableDataCell>
                   <TableDataCell>
                     <Button onClick={() => editar(record)}>Editar</Button>
+                    <br/>
                     <Button onClick={() => eliminar(record.ID_Medicina)}>
-                      eliminar
+                      Eliminar
                     </Button>
                   </TableDataCell>
                 </TableRow>

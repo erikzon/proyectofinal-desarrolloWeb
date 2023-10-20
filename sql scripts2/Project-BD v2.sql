@@ -43,7 +43,6 @@ TipoMedicamento		varchar(50)		NOT NULL,
 Descripcion			varchar(255) 			,
 Imagen 			ntext
 );
-
 create table Paciente(
 ID					int not null primary key(ID),
 Identificador		char(30) NOT NULL ,
@@ -359,7 +358,8 @@ go
 create proc readMedicina
 as
 begin try
-select ID_Medicina,Nombre,Perecedero,CONVERT(VARCHAR(20), Fecha_Ingreso, 103) as Fecha_Ingreso, CONVERT(VARCHAR(20), Fecha_Lote, 103)  as Fecha_Lote, CONVERT(VARCHAR(20), Fecha_Caducidad, 103) as Fecha_Caducidad, Casa, TipoMedicamento, Imagen    from Medicina
+select ID_Medicina as 'ID',Nombre,Perecedero,CONVERT(VARCHAR(20), Fecha_Ingreso, 103) as 'Ingreso', CONVERT(VARCHAR(20), Fecha_Lote, 103)  as 'Lote', CONVERT(VARCHAR(20), Fecha_Caducidad, 103) as 'Caducidad', Casa, TipoMedicamento as 'Tipo', Imagen, Descripcion   from Medicina
+
 end try 
 begin catch
 select
@@ -368,6 +368,7 @@ ERROR_MESSAGE() as ErrorMesage
 end catch
 go
 
+drop proc readMedicina
 go
 create proc readTipo_usuario
 as 

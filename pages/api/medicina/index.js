@@ -64,7 +64,7 @@ export default async function handler(req, res) {
       res.end(JSON.stringify({ respuesta: "correcto" }));
     } else if (req.method === "PUT") {
       await request.query(
-        `update medicina set nombre = '${req.query.usuario}', Perecedero = 1, Fecha_Ingreso = convert(smalldatetime,'${req.query.fechaingreso}',103), Fecha_Lote = convert(smalldatetime,'${req.query.fechalote}',103), Fecha_Caducidad = convert(smalldatetime,'${req.query.fechacaducidad}',103), Casa = '${req.query.casa}', TipoMedicamento = '${req.query.tipomedicamento}' where casa = '${req.query.casa}'`
+        `update medicina set nombre = '${req.query.usuario}', Perecedero = 1, Fecha_Ingreso = convert(smalldatetime,'${req.query.fechaingreso}',120), Fecha_Lote = convert(smalldatetime,'${req.query.fechalote}',120), Fecha_Caducidad = convert(smalldatetime,'${req.query.fechacaducidad}',120), Casa = '${req.query.casa}', TipoMedicamento = '${req.query.tipomedicamento}' where casa = '${req.query.casa}'`
       );
       res.writeHead(200, {
         'Access-Control-Allow-Origin': '*',

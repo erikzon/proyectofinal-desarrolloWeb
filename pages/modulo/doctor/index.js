@@ -110,7 +110,6 @@ export default function Doctor({ recordset }) {
     peticion
       .then((response) => response.json())
       .then((datos) => {
-        console.log(datos);
         setOPT(datos);
       })
       .catch((e) => console.log(e));
@@ -130,7 +129,7 @@ export default function Doctor({ recordset }) {
         }}
       >
         <Window style={{ width: "95%" }}>
-          <WindowHeader>Doctores</WindowHeader>
+          <WindowHeader>Empleados</WindowHeader>
           <div
             style={{
               display: "flex",
