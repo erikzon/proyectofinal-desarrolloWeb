@@ -101,7 +101,7 @@ export default function Medicina({ recordset }) {
           setModalCrear(false);
         })
         .catch((e) => console.log(e));
-    };
+       };
     reader.readAsDataURL(ImagenRef.current.files[0]);
   };
   
