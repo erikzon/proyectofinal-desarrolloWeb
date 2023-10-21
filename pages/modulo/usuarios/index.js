@@ -46,41 +46,28 @@ export default function Usuarios({ recordset }) {
   const refreshData = () => {
     router.replace(router.asPath);
   };
-  // const activardesactivar = (usuario, activoinactivo) => {
-  //   let headersList = {
-  //     "Accept": "*/*",
-  //     "User-Agent": "Thunder Client (https://www.thunderclient.com)"
-  //   }
-  //   const peticion = fetch(
-  //     `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/usuarios?usuario=${usuario}&activoinactivo=${
-  //       activoinactivo ? "1" : "0"
-  //     }`,
-  //     { method: "DELETE",
-  //     headers: headersList }
-  //   );    
-  //   peticion
-  //     .then((response) => response.json())
-  //     .then((datos) => {
-  //       refreshData();
-  //     })
-  //     .catch((e) => console.log(e));
-  // };
-
-  const activardesactivar = async (usuario,activoinactivo) => {
+  const activardesactivar = (usuario, activoinactivo) => {
     let headersList = {
       "Accept": "*/*",
       "User-Agent": "Thunder Client (https://www.thunderclient.com)"
-     }
-     
-     let response = await fetch("http://167.71.172.206:3000/api/usuarios?usuario=vito&activoinactivo=0", { 
-       method: "DELETE",
-       headers: headersList
-     });
-     
-     let data = await response.text();
-     console.log(data);
-     
-  }
+    }
+    const peticion = fetch(
+      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/usuarios?usuario=${usuario}&activoinactivo=${
+        activoinactivo ? "1" : "0"
+      }`,
+      { method: "DELETE",
+      headers: headersList,
+      mode: 'no-cors'
+    }
+    );
+    
+    peticion
+      .then((response) => response.json())
+      .then((datos) => {
+        refreshData();
+      })
+      .catch((e) => console.log(e));
+  };
 
   const [usuario, setusuario] = useState("erick");
   const [contrasena, setcontrasena] = useState("4125");
