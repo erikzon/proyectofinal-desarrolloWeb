@@ -17,11 +17,14 @@ import { useRouter } from "next/router";
 export async function getServerSideProps(context) {
   const sql = require("mssql/msnodesqlv8");
   var config = {
-    database: "proyecto",
-    server: "ERICK-LAPTO\\SQLEXPRESS",
-    driver: "msnodesqlv8",
+    database: process.env.DATABASE,
+    server: process.env.NEXT_PUBLIC_SERVER,
+    user: process.env.USERDB,
+    password: process.env.PASSWORD,
+    port: process.env.PORT,
+    driver: process.env.DRIVER,
     options: {
-      trustedConnection: true,
+      trustedConnection: process.env.TRUSTED_CONNECTION === 'true',
     },
   };
   sql.connect(config);
@@ -350,7 +353,6 @@ export default function Paciente({ recordset: pacientes, habitacionesDisponibles
                 <TableHeadCell> Residencia </TableHeadCell>
                 <TableHeadCell> Contacto </TableHeadCell>
                 <TableHeadCell> Estado </TableHeadCell>
-                <TableHeadCell> AltaBaja </TableHeadCell>
                 <TableHeadCell> Edad </TableHeadCell>
                 <TableHeadCell> Visitas </TableHeadCell>
                 <TableHeadCell> Clinica </TableHeadCell>
@@ -367,9 +369,6 @@ export default function Paciente({ recordset: pacientes, habitacionesDisponibles
                       <TableDataCell>{record.Residencia}</TableDataCell>
                       <TableDataCell>{record.Contacto}</TableDataCell>
                       <TableDataCell>{record.Estado}</TableDataCell>
-                      <TableDataCell>
-                        {record.AltaBaja ? "alta" : "baja"}
-                      </TableDataCell>
                       <TableDataCell>{record.Edad}</TableDataCell>
                       <TableDataCell>{record.Visitas}</TableDataCell>
                       <TableDataCell>{record.ClinicaID}</TableDataCell>
@@ -383,7 +382,7 @@ export default function Paciente({ recordset: pacientes, habitacionesDisponibles
                               activardesactivar(record.Nombre, !record.AltaBaja)
                             }
                           >
-                            {record.AltaBaja ? "desactivar" : "activar"}
+                            Dar de alta
                           </Button>
                         </TableDataCell>
                       )}
@@ -396,9 +395,6 @@ export default function Paciente({ recordset: pacientes, habitacionesDisponibles
                       <TableDataCell>{record.Residencia}</TableDataCell>
                       <TableDataCell>{record.Contacto}</TableDataCell>
                       <TableDataCell>{record.Estado}</TableDataCell>
-                      <TableDataCell>
-                        {record.AltaBaja ? "alta" : "baja"}
-                      </TableDataCell>
                       <TableDataCell>{record.Edad}</TableDataCell>
                       <TableDataCell>{record.Visitas}</TableDataCell>
                       <TableDataCell>{record.ClinicaID}</TableDataCell>
@@ -412,7 +408,7 @@ export default function Paciente({ recordset: pacientes, habitacionesDisponibles
                               activardesactivar(record.Nombre, !record.AltaBaja)
                             }
                           >
-                            {record.AltaBaja ? "desactivar" : "activar"}
+                            Dar de alta
                           </Button>
                         </TableDataCell>
                       )}

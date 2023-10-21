@@ -19,7 +19,7 @@ const sql = require("mssql/msnodesqlv8");
   var request = new sql.Request();
   if (req.method === "DELETE") {
     await request.query(
-      `exec deletePaciente '${req.query.usuario}', ${req.query.activoinactivo}`,
+      `delete from Paciente where Nombre = '${req.query.usuario}'`,
       function (err, recordSet) {
         if (err) {
           res.writeHead(400, {

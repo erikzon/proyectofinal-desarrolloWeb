@@ -45,8 +45,7 @@ create table Habitacion (
     ClinicaID   int,  -- Referencia a la clínica a la que pertenece la habitación
     foreign key (ClinicaID) references Clinica(ID)
 );
-
-
+use proyecto;
 -- Tabla para los pacientes
 create table Paciente(
     ID              int IDENTITY(1,1) not null primary key,

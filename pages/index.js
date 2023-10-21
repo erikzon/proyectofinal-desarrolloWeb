@@ -6,6 +6,8 @@ import {
   WindowContent,
   TextField,
   Button,
+  AppBar,
+  Toolbar
 } from "react95";
 require('dotenv').config()
 
@@ -13,7 +15,8 @@ export default function Home() {
   const [usuario, setusuario] = useState("erick");
   const [contrasena, setcontrasena] = useState("4125");
   const [mostrarErrorCredencialesIncorrectas, setMostrarErrorCredencialesIncorrectas] = useState(false)
-
+  const [open, setOpen] = useState(false);
+  
   const login = (usuario,contrasena) => {
     const peticion = fetch(`http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/login?usuario=${usuario}&contrasena=${contrasena}`);
     peticion
@@ -31,6 +34,7 @@ export default function Home() {
   }
 
   return (
+    <>
     <div
       style={{
         display: "flex",
@@ -48,7 +52,7 @@ export default function Home() {
         </WindowHeader>
         <div style={{ marginTop: 8 }}>
           <img
-            src="https://www.vhv.rs/dpng/d/57-578520_nombre-de-la-universidad-mariano-galvez-hd-png.png"
+            src="https://umg.edu.gt/assets/umg.png"
             alt="refine-logo"
             width={100}
           />
@@ -93,5 +97,23 @@ export default function Home() {
         </WindowContent>
       </Window>
     </div>
+    <AppBar>
+      <Toolbar style={{ justifyContent: 'space-between' }}>
+      <Button
+        onClick={() => setOpen(!open)}
+        active={open}
+        style={{ fontWeight: 'bold' }}
+      >
+        <img
+          src="https://umg.edu.gt/assets/umg.png"
+          alt='react95 logo'
+          style={{ height: '24px', marginRight: 4 }}
+        />
+        Start
+      </Button>
+      [GRUPO 1] Edgar 7691-15-9407 | Erick 7691-20-10863 | Víctor 7691-19-11984 | Chrissy 7691-20-3886 | Donald 7691-19-11308 | Hugo 7691-20-2920
+      </Toolbar>
+    </AppBar>
+    </>
   );
 };

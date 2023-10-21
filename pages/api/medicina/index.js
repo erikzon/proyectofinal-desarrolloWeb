@@ -15,13 +15,13 @@ export default async function handler(req, res) {
   };
 
   try {
-    await sql.connect(config); // Conectar a la base de datos
+    await sql.connect(config);
 
     var request = new sql.Request();
 
     if (req.method === "DELETE") {
       await request.query(
-        `delete from medicina where ID_Medicina = '${req.query.usuario}'`
+        `delete from medicina where ID_Medicina = '${req.query.ID_Medicina}'`
       );
       res.writeHead(200, {
         'Access-Control-Allow-Origin': '*',

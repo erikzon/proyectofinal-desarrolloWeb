@@ -21,8 +21,10 @@ function ReporteSeis() {
     peticion
       .then((response) => response.json())
       .then((datos) => {
-        setRecordset(datos);
-        setLoaded(true);
+        if (datos !== null && datos.length > 0) {
+          setRecordset(datos);
+          setLoaded(true);
+        }
       })
       .catch((e) => console.log(e));
   }, []);

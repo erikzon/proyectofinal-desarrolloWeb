@@ -725,7 +725,7 @@ GO
 GO
 create proc reporte5
 as
-select Nombre, Edad from Paciente order by edad desc
+select ID,Nombre, Edad from Paciente order by edad desc
 GO
 
 GO
@@ -738,5 +738,4 @@ GO
 
 -- exec readMedicina
 -- select * from Medicina where ID_Medicina = 2
-
 

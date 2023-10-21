@@ -12,7 +12,7 @@ import {
 } from "react95";
 
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export async function getServerSideProps(context) {
   const sql = require("mssql/msnodesqlv8");
@@ -38,24 +38,39 @@ export async function getServerSideProps(context) {
 
 export default function Medicina({ recordset }) {
   const router = useRouter();
-  const refreshData = () => {
-    // router.replace(router.asPath);
-    window.location.reload();
-  };
+  
 
   const [modalCrear, setModalCrear] = useState(false);
-
+  const [datos, setDatos] = useState();
   const [modoUpdate, setModoUpdate] = useState(false);
 
-  const eliminar = (usuario) => {
+  useEffect(() => {
+    cargar();
+  }, []);
+
+
+  const cargar = () => {
     const peticion = fetch(
-      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/medicina?usuario=${usuario}`,
+      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/medicina`,
+      { method: "GET" }
+    );
+    peticion
+      .then((response) => response.json())
+      .then((datos) => {
+        setDatos(datos);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const eliminar = (record) => {
+    const peticion = fetch(
+      `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/medicina?ID_Medicina=${record.ID}`,
       { method: "DELETE" }
     );
     peticion
       .then((response) => response.json())
       .then((datos) => {
-        refreshData();
+        cargar();
       })
       .catch((e) => console.log(e));
   };
@@ -82,7 +97,7 @@ export default function Medicina({ recordset }) {
       peticion
         .then((response) => response.json())
         .then((datos) => {
-          refreshData();
+          cargar();
           setModalCrear(false);
         })
         .catch((e) => console.log(e));
@@ -99,7 +114,7 @@ export default function Medicina({ recordset }) {
     peticion
       .then((response) => response.json())
       .then((datos) => {
-        refreshData();
+        cargar();
         setModalCrear(false);
       })
       .catch((e) => console.log(e));
@@ -287,14 +302,14 @@ export default function Medicina({ recordset }) {
           <Table>
             <TableHead>
               <TableRow>
-                {Object.keys(recordset[0]).map((cabecera, index) => (
+                {datos && Object.keys(recordset[0]).map((cabecera, index) => (
                   <TableHeadCell key={index}> {cabecera} </TableHeadCell>
                 ))}
                 <TableHeadCell> Accion </TableHeadCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {recordset.map((record) => (
+              {datos && datos.map((record) => (
                 <TableRow key={record.ID}>
                   <TableDataCell>{record.ID}</TableDataCell>
                   <TableDataCell>{record.Nombre}</TableDataCell>
@@ -309,7 +324,7 @@ export default function Medicina({ recordset }) {
                   <TableDataCell>
                     <Button onClick={() => editar(record)}>Editar</Button>
                     <br/>
-                    <Button onClick={() => eliminar(record.ID_Medicina)}>
+                    <Button onClick={() => eliminar(record)}>
                       Eliminar
                     </Button>
                   </TableDataCell>

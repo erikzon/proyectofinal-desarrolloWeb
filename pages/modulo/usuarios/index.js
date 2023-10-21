@@ -21,11 +21,14 @@ import { useState, useEffect, useRef } from "react";
 export async function getServerSideProps(context) {
   const sql = require("mssql/msnodesqlv8");
   var config = {
-    database: "proyecto",
-    server: "ERICK-LAPTO\\SQLEXPRESS",
-    driver: "msnodesqlv8",
+    database: process.env.DATABASE,
+    server: process.env.NEXT_PUBLIC_SERVER,
+    user: process.env.USERDB,
+    password: process.env.PASSWORD,
+    port: process.env.PORT,
+    driver: process.env.DRIVER,
     options: {
-      trustedConnection: true,
+      trustedConnection: process.env.TRUSTED_CONNECTION === 'true',
     },
   };
 
