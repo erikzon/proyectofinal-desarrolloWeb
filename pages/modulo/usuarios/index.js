@@ -47,12 +47,17 @@ export default function Usuarios({ recordset }) {
     router.replace(router.asPath);
   };
   const activardesactivar = (usuario, activoinactivo) => {
+    let headersList = {
+      "Accept": "*/*",
+      "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+    }
     const peticion = fetch(
       `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/usuarios?usuario=${usuario}&activoinactivo=${
         activoinactivo ? "1" : "0"
       }`,
-      { method: "DELETE" }
-    );
+      { method: "DELETE",
+      headers: headersList }
+    );    
     peticion
       .then((response) => response.json())
       .then((datos) => {
