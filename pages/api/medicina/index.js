@@ -74,13 +74,13 @@ export default async function handler(req, res) {
       });
       res.end(JSON.stringify({ respuesta: "correcto" }));
     } else {
-      res.writeHead(400, {
+      res.writeHead(200, {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': '*',
         'Content-Type': 'application/json',
       });
-      res.end(JSON.stringify({respuesta: "Método HTTP no válido" }));
+      res.end(JSON.stringify({  respuesta: "correcto" }));
     }
   } catch (err) {
     console.error(err);

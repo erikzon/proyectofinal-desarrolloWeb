@@ -119,6 +119,14 @@ values
         res.status(200).json({ message: 'Record updated successfully' });
       }
     });
+  } else {
+    res.writeHead(200, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
+      'Content-Type': 'application/json',
+    });
+    res.end(JSON.stringify({  respuesta: "correcto" }));
   }
 }
 export const config = {
