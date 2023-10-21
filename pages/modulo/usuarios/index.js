@@ -56,7 +56,8 @@ export default function Usuarios({ recordset }) {
         activoinactivo ? "1" : "0"
       }`,
       { method: "DELETE",
-        headers: headersList
+        headers: headersList,
+        mode: 'no-cors'
       }
     );
     
