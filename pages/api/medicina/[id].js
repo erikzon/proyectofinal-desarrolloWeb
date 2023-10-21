@@ -50,3 +50,8 @@ export default async function handler(req, res) {
     sql.close(); // Cerrar la conexión después de completar la consulta
   }
 }
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+}

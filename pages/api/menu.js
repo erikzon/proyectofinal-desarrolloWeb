@@ -51,3 +51,8 @@ export default async function handler(req, res) {
     res.end(JSON.stringify({ respuesta: "en desarrollo" }));
   }
 }
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+}

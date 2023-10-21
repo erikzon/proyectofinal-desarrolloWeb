@@ -121,3 +121,8 @@ values
     });
   }
 }
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+}
