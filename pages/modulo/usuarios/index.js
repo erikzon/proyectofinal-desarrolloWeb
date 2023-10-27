@@ -21,18 +21,20 @@ import { useState, useEffect, useRef } from "react";
 export async function getServerSideProps(context) {
   const sql = require("mssql/msnodesqlv8");
   var config = {
-    database: "proyecto",
-    server: "ERICK-LAPTO\\SQLEXPRESS",
-    driver: "msnodesqlv8",
+    database: process.env.DATABASE,
+    server: process.env.NEXT_PUBLIC_SERVER,
+    user: process.env.USERDB,
+    password: process.env.PASSWORD,
+    port: process.env.PORT,
+    driver: process.env.DRIVER,
     options: {
-      trustedConnection: true,
+      trustedConnection: process.env.TRUSTED_CONNECTION === 'true',
     },
   };
 
   sql.connect(config);
   var request = new sql.Request();
   let { recordset } = await request.query("exec readusuario");
-  console.log(recordset);
   return {
     props: { recordset },
   };
@@ -45,12 +47,19 @@ export default function Usuarios({ recordset }) {
     router.replace(router.asPath);
   };
   const activardesactivar = (usuario, activoinactivo) => {
+    let headersList = {
+      "Accept": "*/*",
+      "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+    }
     const peticion = fetch(
       `http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/usuarios?usuario=${usuario}&activoinactivo=${
         activoinactivo ? "1" : "0"
       }`,
-      { method: "DELETE" }
+      { method: "DELETE",
+        headers: headersList
+      }
     );
+    
     peticion
       .then((response) => response.json())
       .then((datos) => {
@@ -115,6 +124,7 @@ export default function Usuarios({ recordset }) {
     setModalCrear(true);
     setTimeout(() => {
       usuarioRef.current.value = record.Usuario;
+      
       contrasenaRef.current.value = record.Contrasena.trim();
       FK_ID_TipoUsuarioRef.current.value = record.FK_ID_TipoUsuario;
     }, 200);
@@ -173,9 +183,10 @@ export default function Usuarios({ recordset }) {
                   >
                     Usuario
                     <TextField
-                      placeholder="User Name"
+                      placeholder="nombre"
                       fullWidth
                       ref={usuarioRef}
+                      disabled={modoUpdate ? true : false}
                     />
                   </div>
                   <div
@@ -235,7 +246,7 @@ export default function Usuarios({ recordset }) {
                   <TableDataCell>
                     {record.ActivoInactivo ? "activo" : "inactivo"}
                   </TableDataCell>
-                  <TableDataCell>{record.FK_ID_TipoUsuario}</TableDataCell>
+                  <TableDataCell>{record.TipoUsuario}</TableDataCell>
                   <TableDataCell>
                     <Button onClick={() => editar(record)}>Editar</Button>
                     <Button

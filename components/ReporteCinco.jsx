@@ -21,8 +21,10 @@ function ReporteCinco() {
     peticion
       .then((response) => response.json())
       .then((datos) => {
-        setRecordset(datos);
-        setLoaded(true);
+        if (datos !== null && datos.length > 0) {
+          setRecordset(datos);
+          setLoaded(true);
+        }
       })
       .catch((e) => console.log(e));
   }, []);
@@ -31,10 +33,8 @@ function ReporteCinco() {
     <Table>
       <TableHead>
         <TableRow>
-          {loaded &&
-            Object.keys(recordset[0]).map((cabecera, index) => (
-              <TableHeadCell key={index}> {cabecera} </TableHeadCell>
-            ))}
+          <TableHeadCell>Nombre</TableHeadCell>
+          <TableHeadCell>Edad</TableHeadCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -42,7 +42,7 @@ function ReporteCinco() {
           <>
             {recordset.map((record) => (
               <>
-                <TableRow key={record.Nombre}>
+                <TableRow key={record.ID}>
                   <TableDataCell>{record.Nombre}</TableDataCell>
                   <TableDataCell>{record.Edad}</TableDataCell>
                 </TableRow>

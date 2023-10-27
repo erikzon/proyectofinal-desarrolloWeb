@@ -21,8 +21,10 @@ function ReporteUno() {
     peticion
       .then((response) => response.json())
       .then((datos) => {
-        setRecordset(datos);
-        setLoaded(true);
+        if (datos !== null && datos.length > 0) {
+          setRecordset(datos);
+          setLoaded(true);
+        }
       })
       .catch((e) => console.log(e));
   }, []);
@@ -31,25 +33,25 @@ function ReporteUno() {
     <Table>
       <TableHead>
         <TableRow>
-          {loaded &&
-            Object.keys(recordset[0]).map((cabecera, index) => (
-              <TableHeadCell key={index}> {cabecera} </TableHeadCell>
-            ))}
+        <TableHeadCell> Id  </TableHeadCell>
+        <TableHeadCell> Nombre </TableHeadCell>
+        <TableHeadCell> Apellido </TableHeadCell>
+        <TableHeadCell> Residencia </TableHeadCell>
+        <TableHeadCell> Contacto </TableHeadCell>
+        <TableHeadCell> Estado </TableHeadCell>
+        <TableHeadCell> Edad </TableHeadCell>
+        <TableHeadCell> Visitas </TableHeadCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {recordset.map((record) => (
           <TableRow key={record.ID}>
             <TableDataCell>{record.ID}</TableDataCell>
-            <TableDataCell>{record.Identificador}</TableDataCell>
             <TableDataCell>{record.Nombre}</TableDataCell>
             <TableDataCell>{record.Apellido}</TableDataCell>
             <TableDataCell>{record.Residencia}</TableDataCell>
             <TableDataCell>{record.Contacto}</TableDataCell>
             <TableDataCell>{record.Estado}</TableDataCell>
-            <TableDataCell>
-              {record.AltaBaja ? "de alta" : "de baja"}
-            </TableDataCell>
             <TableDataCell>{record.Edad}</TableDataCell>
             <TableDataCell>{record.Visitas}</TableDataCell>
           </TableRow>

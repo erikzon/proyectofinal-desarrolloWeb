@@ -15,13 +15,13 @@ export default async function handler(req, res) {
   };
 
   try {
-    await sql.connect(config); // Conectar a la base de datos
+    await sql.connect(config);
 
     var request = new sql.Request();
 
     if (req.method === "DELETE") {
       await request.query(
-        `delete from medicina where ID_Medicina = '${req.query.usuario}'`
+        `delete from medicina where ID_Medicina = '${req.query.ID_Medicina}'`
       );
       res.writeHead(200, {
         'Access-Control-Allow-Origin': '*',
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
       res.end(JSON.stringify({ respuesta: "correcto" }));
     } else if (req.method === "PUT") {
       await request.query(
-        `update medicina set nombre = '${req.query.usuario}', Perecedero = 1, Fecha_Ingreso = convert(smalldatetime,'${req.query.fechaingreso}',103), Fecha_Lote = convert(smalldatetime,'${req.query.fechalote}',103), Fecha_Caducidad = convert(smalldatetime,'${req.query.fechacaducidad}',103), Casa = '${req.query.casa}', TipoMedicamento = '${req.query.tipomedicamento}' where casa = '${req.query.casa}'`
+        `update medicina set nombre = '${req.query.usuario}', Perecedero = 1, Fecha_Ingreso = convert(smalldatetime,'${req.query.fechaingreso}',120), Fecha_Lote = convert(smalldatetime,'${req.query.fechalote}',120), Fecha_Caducidad = convert(smalldatetime,'${req.query.fechacaducidad}',120), Casa = '${req.query.casa}', TipoMedicamento = '${req.query.tipomedicamento}' where casa = '${req.query.casa}'`
       );
       res.writeHead(200, {
         'Access-Control-Allow-Origin': '*',
@@ -74,13 +74,13 @@ export default async function handler(req, res) {
       });
       res.end(JSON.stringify({ respuesta: "correcto" }));
     } else {
-      res.writeHead(400, {
+      res.writeHead(200, {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': '*',
         'Content-Type': 'application/json',
       });
-      res.end(JSON.stringify({respuesta: "Método HTTP no válido" }));
+      res.end(JSON.stringify({  respuesta: "correcto" }));
     }
   } catch (err) {
     console.error(err);
@@ -94,4 +94,9 @@ export default async function handler(req, res) {
   } finally {
     sql.close(); // Cerrar la conexión después de completar la consulta
   }
+}
+export const config = {
+  api: {
+    externalResolver: true,
+  },
 }

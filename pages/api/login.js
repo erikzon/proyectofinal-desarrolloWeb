@@ -47,7 +47,11 @@ export default async function handler(req, res) {
       'Access-Control-Allow-Headers': '*',
       'Content-Type': 'application/json',
     });
-    res.end(JSON.stringify({ respuesta: 'en desarrollo' }));
-
+    res.end(JSON.stringify({  respuesta: "correcto" }));
   }
+}
+export const config = {
+  api: {
+    externalResolver: true,
+  },
 }

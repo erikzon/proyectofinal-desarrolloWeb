@@ -21,10 +21,10 @@ function ReporteDos() {
     peticion
       .then((response) => response.json())
       .then((datos) => {
-        console.log(datos.recordsets);
-        console.log(datos.recordsets[0][0]);
-        setRecordset(datos);
-        setLoaded(true);
+        if (datos !== null) {
+          setRecordset(datos);
+          setLoaded(true);
+        }
       })
       .catch((e) => console.log(e));
   }, []);

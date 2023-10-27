@@ -5,11 +5,14 @@ import { Window, WindowHeader, WindowContent, Button } from "react95";
 export async function getServerSideProps(context) {
   const sql = require("mssql/msnodesqlv8");
   var config = {
-    database: "proyecto",
-    server: "ERICK-LAPTO\\SQLEXPRESS",
-    driver: "msnodesqlv8",
+    database: process.env.DATABASE,
+    server: process.env.NEXT_PUBLIC_SERVER,
+    user: process.env.USERDB,
+    password: process.env.PASSWORD,
+    port: process.env.PORT,
+    driver: process.env.DRIVER,
     options: {
-      trustedConnection: true,
+      trustedConnection: process.env.TRUSTED_CONNECTION === 'true',
     },
   };
   sql.connect(config);
@@ -76,7 +79,7 @@ export default function Home({recordset}) {
               disabled={!recordset[0].ModuloDoctor}
               onClick={() => Router.push("/modulo/doctor")}
             >
-              Modulo Doctor
+              Modulo Empleados
             </Button>
             <Button
               type="submit"
@@ -84,7 +87,7 @@ export default function Home({recordset}) {
               disabled={!recordset[0].ModuloMedicina}
               onClick={() => Router.push("/modulo/medicina")}
             >
-              Modulo Medicina
+              Modulo Inventario
             </Button>
             <Button
               type="submit"
@@ -92,7 +95,15 @@ export default function Home({recordset}) {
               disabled={!recordset[0].ModuloReporte}
               onClick={() => Router.push("/modulo/reportes")}
             >
-              Modulo Reportes
+              Historial Clinico de Pacientes
+            </Button>
+            <Button
+              type="submit"
+              value="login"
+              disabled={!recordset[0].ModuloPaciente}
+              onClick={() => Router.push("/modulo/habitaciones")}
+            >
+              Habitaciones Disponibles
             </Button>
             <Button
               type="submit"

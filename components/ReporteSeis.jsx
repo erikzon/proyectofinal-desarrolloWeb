@@ -15,14 +15,16 @@ function ReporteSeis() {
   const [recordset, setRecordset] = useState([]);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    const peticion = fetch(`http://loca${process.env.NEXT_PUBLIC_SERVER}lhost:3000/api/reportes?numero=6`, {
+    const peticion = fetch(`http://${process.env.NEXT_PUBLIC_SERVER}:3000/api/reportes?numero=6`, {
       method: "GET",
     });
     peticion
       .then((response) => response.json())
       .then((datos) => {
-        setRecordset(datos);
-        setLoaded(true);
+        if (datos !== null && datos.length > 0) {
+          setRecordset(datos);
+          setLoaded(true);
+        }
       })
       .catch((e) => console.log(e));
   }, []);
@@ -50,8 +52,8 @@ function ReporteSeis() {
                   <TableDataCell>{record.Edad}</TableDataCell>
                   <TableDataCell>{record.AltaBaja ? "Alta" : 'Baja'}</TableDataCell>
                   <TableDataCell>{record.Colegiado}</TableDataCell>
-                  <TableDataCell>{record.FechaIngreso}</TableDataCell>
-                  <TableDataCell>{record.FechaSalida}</TableDataCell>
+                  <TableDataCell>{new Date(record.FechaIngreso).toISOString().slice(0,10)}</TableDataCell>
+                  <TableDataCell>{new Date(record.FechaSalida).toISOString().slice(0,10)}</TableDataCell>
                   <TableDataCell>{record.Enfermedad && "X"}</TableDataCell>
                   <TableDataCell>{record.Accidente && "X"}</TableDataCell>
                 </TableRow>

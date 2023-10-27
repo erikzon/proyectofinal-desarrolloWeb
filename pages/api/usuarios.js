@@ -22,12 +22,12 @@ export default async function handler(req, res) {
       function (err, recordSet) {
         if (err) {
           res.writeHead(400, {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': '*',
-      'Content-Type': 'application/json',
-    });
-    res.end(JSON.stringify({ respuesta: 0 }));
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json',
+          });
+          return res.end(JSON.stringify({ respuesta: 0 }));
         } else {
           res.writeHead(200, {
             'Access-Control-Allow-Origin': '*',
@@ -35,7 +35,7 @@ export default async function handler(req, res) {
             'Access-Control-Allow-Headers': '*',
             'Content-Type': 'application/json',
           });
-          res.end(JSON.stringify({ respuesta: "correcto" }));
+          return res.end(JSON.stringify({ respuesta: "correcto" }));
         }
       }
     );
@@ -50,17 +50,17 @@ export default async function handler(req, res) {
       'Access-Control-Allow-Headers': '*',
       'Content-Type': 'application/json',
     });
-    res.end(JSON.stringify({ respuesta: 0 }));
-        } else {
-          res.writeHead(200, {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': '*',
-            'Content-Type': 'application/json',
-          });
-          res.end(JSON.stringify(recordSet.recordset));
-        }
-      }
+    return res.end(JSON.stringify({ respuesta: 0 }));
+    } else {
+      res.writeHead(200, {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': '*',
+        'Content-Type': 'application/json',
+      });
+      return res.end(JSON.stringify(recordSet.recordset));
+    }
+  }
     );
   } else if (req.method === "POST") {
     await request.query(
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
       }
     );
   } else if (req.method === "PUT") {
-    `update usuario set Usuario = '${req.query.usuario}', Contrasena = '${req.query.contrasena}', FK_ID_TipoUsuario=${req.query.tipo} where Usuario = '${req.query.usuario}'`;
+    console.log(`update usuario set Usuario = '${req.query.usuario}', Contrasena = '${req.query.contrasena}', FK_ID_TipoUsuario=${req.query.tipo} where Usuario = '${req.query.usuario}'`);
     await request.query(
       `update usuario set Usuario = '${req.query.usuario}', Contrasena = '${req.query.contrasena}', FK_ID_TipoUsuario=${req.query.tipo} where Usuario = '${req.query.usuario}'`,
       function (err, recordSet) {
@@ -109,5 +109,19 @@ export default async function handler(req, res) {
         }
       }
     );
+  } else {
+    res.writeHead(200, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': '*',
+      'Content-Type': 'application/json',
+    });
+    res.end(JSON.stringify({  respuesta: "correcto" }));
   }
+}
+
+export const config = {
+  api: {
+    externalResolver: true,
+  },
 }

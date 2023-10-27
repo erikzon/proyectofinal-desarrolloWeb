@@ -18,11 +18,14 @@ import { useRef, useState, useEffect } from "react";
 export async function getServerSideProps(context) {
   const sql = require("mssql/msnodesqlv8");
   var config = {
-    database: "proyecto",
-    server: "ERICK-LAPTO\\SQLEXPRESS",
-    driver: "msnodesqlv8",
+    database: process.env.DATABASE,
+    server: process.env.NEXT_PUBLIC_SERVER,
+    user: process.env.USERDB,
+    password: process.env.PASSWORD,
+    port: process.env.PORT,
+    driver: process.env.DRIVER,
     options: {
-      trustedConnection: true,
+      trustedConnection: process.env.TRUSTED_CONNECTION === 'true',
     },
   };
 
@@ -110,7 +113,6 @@ export default function Doctor({ recordset }) {
     peticion
       .then((response) => response.json())
       .then((datos) => {
-        console.log(datos);
         setOPT(datos);
       })
       .catch((e) => console.log(e));
@@ -130,7 +132,7 @@ export default function Doctor({ recordset }) {
         }}
       >
         <Window style={{ width: "95%" }}>
-          <WindowHeader>Doctores</WindowHeader>
+          <WindowHeader>Empleados</WindowHeader>
           <div
             style={{
               display: "flex",
@@ -195,7 +197,7 @@ export default function Doctor({ recordset }) {
                     }}
                   >
                     colegiado
-                    <TextField fullWidth type="text" ref={colegiadoRef} />
+                    <TextField fullWidth type="number" ref={colegiadoRef} disabled={modoUpdate ? true : false}/>
                   </div>
                   <div
                     style={{

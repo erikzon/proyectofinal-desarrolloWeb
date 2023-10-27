@@ -36,6 +36,14 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
       });
       res.end(JSON.stringify(result.recordset));
+    } else {
+      res.writeHead(200, {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': '*',
+        'Content-Type': 'application/json',
+      });
+      res.end(JSON.stringify({  respuesta: "correcto" }));
     }
   } catch (err) {
     console.error(err);
@@ -49,4 +57,9 @@ export default async function handler(req, res) {
   } finally {
     sql.close(); // Cerrar la conexión después de completar la consulta
   }
+}
+export const config = {
+  api: {
+    externalResolver: true,
+  },
 }
